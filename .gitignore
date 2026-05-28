@@ -1,0 +1,5 @@
+# Ignore all Markdown files
+*.md
+
+# Keep lab write-ups
+!LABS/**/LAB-*.md
