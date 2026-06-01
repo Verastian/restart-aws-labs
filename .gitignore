@@ -1,5 +1,15 @@
 # Ignore all Markdown files
 *.md
 
-# Keep lab write-ups
+# Keep lab write-ups, index pages and project docs
 !LABS/**/LAB-*.md
+!LABS/index.md
+!CLAUDE.md
+
+# Docusaurus
+website/node_modules/
+website/.docusaurus/
+website/build/
+
+# Docker
+.env
