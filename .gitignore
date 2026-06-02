@@ -12,3 +12,6 @@ website/build/
 
 # Docker
 .env
+
+# Archivo local de diagramas (no subir a GitHub)
+diagramas/todos_los_diagramas.py
