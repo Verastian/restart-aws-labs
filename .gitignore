@@ -1,9 +1,8 @@
-# Ignore all Markdown files
+# Ignore Markdown files outside de LABS/
 *.md
 
-# Keep lab write-ups, index pages and project docs
-!LABS/**/LAB-*.md
-!LABS/index.md
+# Keep all Markdown within LABS/ and project docs
+!LABS/**/*.md
 !CLAUDE.md
 
 # Docusaurus

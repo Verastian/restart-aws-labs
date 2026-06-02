@@ -1,11 +1,17 @@
 ---
 slug: /
-sidebar_position: 0
+sidebar_position: 1
 title: Inicio
 ---
 
-# AWS Restart Labs
+# Documentación AWS
 
-Notas y capturas de los laboratorios del Bootcamp **AWS Restart**.
+Base de conocimiento para la certificación **AWS Cloud Practitioner** y **IA Generativa en AWS**, construida durante el Bootcamp AWS Restart.
 
-Selecciona un laboratorio en el panel izquierdo para comenzar.
+## Contenido
+
+| Sección | Descripción |
+|---------|-------------|
+| **Servicios AWS** | Teoría y conceptos clave por servicio |
+| **Laboratorios** | Prácticas guiadas con capturas de pantalla |
+| **Guías** | Configuraciones, despliegues y tutoriales |

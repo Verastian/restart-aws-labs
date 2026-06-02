@@ -1,0 +1,10 @@
+{
+  "label": "Guías",
+  "position": 4,
+  "collapsible": true,
+  "collapsed": false,
+  "link": {
+    "type": "doc",
+    "id": "guias/index"
+  }
+}
