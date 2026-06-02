@@ -7,6 +7,8 @@ title: Amazon Bedrock
 
 Amazon Bedrock es un servicio administrado que ofrece acceso a **Foundation Models (FM)** de IA generativa de los principales proveedores, a través de una API unificada, sin gestionar infraestructura.
 
+![Arquitectura RAG con Bedrock](../imgs/05_bedrock_rag.png)
+
 ## ¿Qué son los Foundation Models?
 
 Modelos de IA entrenados con enormes cantidades de datos que pueden adaptarse a múltiples tareas: generación de texto, imágenes, código, embeddings y más.

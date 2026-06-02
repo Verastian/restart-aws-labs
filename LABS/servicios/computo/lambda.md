@@ -7,6 +7,8 @@ title: AWS Lambda
 
 AWS Lambda es un servicio de cómputo **sin servidor (serverless)** que ejecuta código en respuesta a eventos, gestionando automáticamente la infraestructura subyacente.
 
+![Flujo de invocación Lambda](../imgs/04_lambda_flujo.png)
+
 ## ¿Cómo funciona?
 
 ```

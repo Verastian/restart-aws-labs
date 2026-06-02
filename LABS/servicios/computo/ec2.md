@@ -7,6 +7,8 @@ title: Amazon EC2
 
 Amazon EC2 proporciona capacidad de cómputo escalable en la nube. Permite lanzar servidores virtuales en minutos, configurar seguridad y red, y pagar solo por lo que se usa.
 
+![Estructura básica de EC2](../imgs/03_ec2_basico.png)
+
 ## Conceptos clave
 
 ### AMI — Amazon Machine Image
