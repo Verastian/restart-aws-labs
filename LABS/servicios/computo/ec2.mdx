@@ -1,0 +1,371 @@
+---
+sidebar_position: 1
+title: Amazon EC2
+description: Servidores virtuales en la nube — tipos, escalado, seguridad y almacenamiento.
+---
+
+# 🖥️ Amazon EC2 — Elastic Compute Cloud
+
+⏱️ **Tiempo de lectura estimado:** 20 minutos &nbsp;|&nbsp; 🏷️ **Relevancia:** AWS Cloud Practitioner CLF-C02
+
+Amazon EC2 proporciona capacidad de cómputo escalable en la nube. Permite lanzar <Term id="instancia">servidores virtuales</Term> en minutos, configurar seguridad y red, y pagar solo por lo que se usa.
+
+![Estructura básica de EC2](../imgs/03_ec2_basico.png)
+
+---
+
+## 💡 Conceptos clave
+
+:::info[🖥️ ¿Qué es una instancia EC2?]
+Una **instancia** es un servidor virtual que corre en la infraestructura física de AWS. Tiene CPU, RAM, almacenamiento y red asignados. Se puede iniciar, detener, redimensionar y terminar en minutos.
+:::
+
+:::info[📀 AMI — Amazon Machine Image]
+Plantilla preconfigurada con el sistema operativo y software necesarios para lanzar una instancia. Es el punto de partida de cualquier servidor EC2. Puede ser de Amazon, del Marketplace o creada por ti.
+:::
+
+:::info[🛡️ Grupo de Seguridad]
+<Term id="firewall">Firewall virtual</Term> a nivel de instancia. Define reglas de entrada (*inbound*) y salida (*outbound*) por protocolo, <Term id="puerto">puerto</Term> e IP de origen. Las reglas se aplican en tiempo real.
+:::
+
+---
+
+## 🚀 Pasos para lanzar una instancia EC2
+
+### Paso 1 — Seleccionar una AMI
+
+Una <Term id="ami">AMI</Term> define el sistema operativo y el software preinstalado:
+
+| Fuente | Descripción |
+|---|---|
+| **AWS Quick Start** | AMIs oficiales: Amazon Linux, Ubuntu, Windows Server |
+| **AWS Marketplace** | Software de terceros preconfigurado (Nginx, WordPress, etc.) |
+| **Community AMIs** | Creadas por la comunidad (usar con precaución) |
+| **AMIs propias** | Snapshots de instancias existentes para replicar entornos |
+
+### Paso 2 — Seleccionar tipo de instancia
+
+El tipo determina los recursos de la instancia:
+
+```text
+t3.large
+↑↑ ↑↑↑↑↑
+|| └───── Tamaño (nano, micro, small, medium, large, xlarge, 2xlarge...)
+└──────── Familia (t=general burstable, m=general, c=compute, r=memory...)
+```
+
+### Paso 3 — Configurar red
+
+Durante el lanzamiento se configura:
+- **VPC** y subred donde residirá la instancia
+- **IP pública** (automática o Elastic IP)
+- **Grupo de seguridad** con las reglas de acceso
+
+### Paso 4 — Configurar almacenamiento
+
+- **EBS:** disco persistente (sobrevive al reinicio)
+- **Instance Store:** almacenamiento temporal de alta velocidad
+
+### Paso 5 — Configurar User Data (opcional)
+
+Script que se ejecuta automáticamente en el primer arranque.
+
+---
+
+## 🗂️ Tipos de Instancia por Categoría
+
+| Categoría | Familias | Optimizada para |
+|---|---|---|
+| **Uso general** | `t3`, `t4g`, `m5`, `m6i` | Balance CPU/RAM. Desarrollo, web, apps pequeñas |
+| **Cómputo intensivo** | `c5`, `c6g`, `c7g` | Alto procesamiento: batch, HPC, modelado |
+| **Memoria intensiva** | `r5`, `r6i`, `x1`, `x2` | Gran RAM: bases de datos en memoria, SAP |
+| **Almacenamiento** | `i3`, `i4i`, `d2`, `d3` | Alto I/O local: bases de datos NoSQL, data warehouses |
+| **Informática acelerada** | `p3`, `p4`, `g4dn`, `inf1` | GPU: ML, renderizado, inferencia de IA |
+
+> **Capa gratuita:** `t2.micro` o `t3.micro` — 750 horas/mes durante 12 meses.
+
+---
+
+## 📈 Escalabilidad
+
+![Escalado EC2 — Vertical vs Horizontal](../imgs/09_ec2_escalado.png)
+
+### Escalado Vertical (Scale Up)
+
+<Term id="escalado_vertical">Aumentar los recursos de una instancia existente</Term>:
+
+```text
+t3.micro (2 vCPU, 1 GiB)  →  t3.large (2 vCPU, 8 GiB)
+```
+
+- Requiere **detener** la instancia previamente
+- Ideal cuando una instancia individual necesita más capacidad
+- Tiene un límite máximo (el tipo de instancia más grande)
+
+### Escalado Horizontal (Scale Out)
+
+<Term id="escalado_horizontal">Agregar más instancias</Term> para distribuir la carga:
+
+```text
+1 servidor  →  10 servidores detrás de un Load Balancer
+```
+
+- No requiere detener instancias existentes
+- Escala prácticamente sin límites
+- Requiere que la aplicación soporte múltiples instancias
+- Es la **estrategia preferida** en arquitecturas cloud
+
+---
+
+## 🛡️ Security Groups
+
+Los Security Groups son <Term id="firewall">firewalls virtuales</Term> que controlan el tráfico entrante y saliente de una instancia:
+
+| Tipo | Descripción |
+|---|---|
+| **Inbound (Entrada)** | Tráfico que llega a la instancia desde el exterior |
+| **Outbound (Salida)** | Tráfico que sale de la instancia hacia el exterior |
+
+### Buenas prácticas
+
+:::warning[⚠️ Principio de mínimo privilegio]
+- ✅ Abre **solo los puertos necesarios** (80 para HTTP, 443 para HTTPS, 22 para SSH)
+- ✅ Restringe por IP origen cuando sea posible
+- ❌ Evita `0.0.0.0/0` en el puerto 22 (SSH abierto al mundo)
+- ✅ Usa Security Groups distintos por función (web, base de datos, admin)
+:::
+
+---
+
+## 🔑 IAM Roles para EC2
+
+![EC2 accediendo a S3 mediante IAM Role](../imgs/10_ec2_iam_s3.png)
+
+Un IAM Role permite que una instancia EC2 interactúe con otros servicios AWS **sin almacenar credenciales** en el servidor:
+
+| Enfoque | Seguridad |
+|---|---|
+| ❌ Credenciales hardcodeadas en la instancia | Inseguro — riesgo de exposición |
+| ✅ IAM Role adjunto a la instancia | Seguro — credenciales temporales rotadas automáticamente |
+
+**Ejemplo:** Una instancia EC2 con un rol que tiene `s3:GetObject` y `s3:PutObject` puede leer y escribir en S3 sin configurar claves de acceso.
+
+---
+
+## ⚙️ User Data
+
+Permite ejecutar scripts automáticamente durante el **primer arranque** de la instancia:
+
+```bash
+#!/bin/bash
+yum update -y
+yum install -y httpd wget
+systemctl enable httpd
+systemctl start httpd
+echo '<html><h1>Servidor configurado automáticamente</h1></html>' > /var/www/html/index.html
+```
+
+**Usos comunes:**
+- Instalación automática de software
+- Configuración inicial del sistema
+- Registro en sistemas de monitoreo
+- Descarga de código de aplicación desde S3
+
+---
+
+## 💾 Opciones de Almacenamiento
+
+### Amazon EBS — Elastic Block Store
+
+Disco virtual persistente conectado a la instancia por red:
+
+| Característica | Detalle |
+|---|---|
+| **Persistencia** | Los datos sobreviven al reinicio y detención |
+| **Tipos** | gp3 (propósito general), io2 (alta IOPS), sc1 (frío) |
+| **Snapshots** | Backups incrementales guardados en S3 |
+| **Facturación** | Por GiB reservado, aunque la instancia esté detenida |
+
+### Instance Store
+
+<Term id="instance_store">Almacenamiento temporal físicamente adjunto al servidor host</Term>:
+
+| Característica | Detalle |
+|---|---|
+| **Velocidad** | Muy alta (directamente en el hardware) |
+| **Persistencia** | ❌ Se pierde al detener o terminar la instancia |
+| **Costo** | Incluido en el precio de la instancia |
+| **Caso de uso** | Caché, buffers, datos temporales de procesamiento |
+
+:::warning[⚠️ Instance Store y pérdida de datos]
+Si detienes, hibernas o terminas una instancia con Instance Store, **todos los datos se pierden**. Nunca almacenes datos críticos en Instance Store.
+:::
+
+---
+
+## 🏷️ Etiquetas (Tags)
+
+Las <Term id="etiquetas">etiquetas</Term> son metadatos clave-valor que se agregan a recursos AWS:
+
+```text
+Name         = WebServer01
+Environment  = Production
+Owner        = DevOps-Team
+Project      = Proyecto-Alpha
+CostCenter   = Marketing
+```
+
+**Beneficios:**
+- 📊 **Control de costos:** filtra gastos por proyecto o equipo en AWS Cost Explorer
+- 🔍 **Organización:** búsqueda y filtrado en la consola
+- ⚙️ **Automatización:** scripts y políticas basadas en etiquetas
+- 🏛️ **Gobierno:** aplicar políticas de seguridad por etiqueta
+
+:::tip[💡 Buena práctica]
+Define un estándar de etiquetado desde el inicio del proyecto. Es muy difícil imponer etiquetado consistente después cuando ya hay decenas de recursos.
+:::
+
+---
+
+## 💰 Opciones de Compra
+
+| Tipo | Ahorro | Caso de uso |
+|---|---|---|
+| **On-Demand** | — | Cargas impredecibles, desarrollo, pruebas |
+| **Reserved (1–3 años)** | hasta 72% | Cargas estables y previsibles |
+| **Spot** | hasta 90% | Cargas tolerantes a interrupciones (batch, ML) |
+| **Savings Plans** | hasta 66% | Flexibilidad de familia e instancia |
+
+---
+
+## Ciclo de vida de una instancia
+
+```
+Pendiente → En ejecución → Detenida → Terminada
+```
+
+| Estado | Facturación cómputo | Datos EBS |
+|---|---|---|
+| **En ejecución** | Sí | Persisten |
+| **Detenida** | No (solo almacenamiento) | Persisten |
+| **Terminada** | No | Se eliminan (por defecto) |
+
+---
+
+## Casos de uso
+
+- Servidores web y aplicaciones
+- Servidores de bases de datos
+- Servidores de juegos
+- Procesamiento por lotes
+- Entornos de desarrollo y prueba
+- Aplicaciones empresariales con requisitos específicos de SO
+
+---
+
+## 🧠 ¿Qué aprendiste?
+
+| Concepto | Resumen |
+|---|---|
+| **AMI** | Plantilla con SO y software para lanzar instancias |
+| **Tipos de instancia** | Familias optimizadas: general, compute, memory, storage, GPU |
+| **Escalado vertical** | Cambiar a un tipo de instancia con más recursos (requiere detener) |
+| **Escalado horizontal** | Agregar más instancias detrás de un Load Balancer |
+| **Security Group** | Firewall virtual: reglas inbound/outbound por puerto e IP |
+| **IAM Role** | Acceso seguro a otros servicios AWS sin credenciales en el servidor |
+| **User Data** | Script de configuración automática al primer arranque |
+| **EBS** | Disco persistente — datos sobreviven al reinicio |
+| **Instance Store** | Almacenamiento temporal de alta velocidad — datos se pierden al detener |
+| **Tags** | Metadatos para organización, costos y automatización |
+
+---
+
+## 📝 Preguntas estilo examen Cloud Practitioner
+
+**1.** ¿Cuál es la principal diferencia entre el **escalado vertical** y el **escalado horizontal** en Amazon EC2?
+
+- A) El escalado vertical agrega más instancias; el horizontal aumenta los recursos de una instancia
+- B) El escalado vertical aumenta los recursos de una instancia; el horizontal agrega más instancias
+- C) Ambos tipos de escalado son equivalentes en costo y eficiencia
+- D) El escalado horizontal requiere detener las instancias existentes
+
+---
+
+**2.** Una empresa ejecuta una aplicación crítica en EC2 y necesita acceder a un bucket S3 de forma segura. ¿Cuál es la mejor práctica?
+
+- A) Almacenar las credenciales AWS en variables de entorno dentro de la instancia
+- B) Hardcodear las claves de acceso en el código de la aplicación
+- C) Adjuntar un IAM Role con los permisos necesarios a la instancia EC2
+- D) Crear un usuario IAM y copiar sus credenciales al servidor
+
+---
+
+**3.** ¿Qué tipo de almacenamiento EC2 pierde todos sus datos cuando la instancia se detiene?
+
+- A) Amazon EBS
+- B) Amazon EFS
+- C) Amazon S3
+- D) Instance Store
+
+---
+
+**4.** ¿Para qué sirven los **User Data** en Amazon EC2?
+
+- A) Para almacenar datos de la aplicación de forma persistente
+- B) Para ejecutar scripts de configuración automática en el primer arranque
+- C) Para definir las reglas del Security Group de la instancia
+- D) Para configurar los permisos IAM de la instancia
+
+---
+
+**5.** Una empresa tiene cargas de trabajo de procesamiento de imágenes que se ejecutan de forma intermitente y pueden interrumpirse. ¿Qué opción de compra EC2 maximiza el ahorro de costos?
+
+- A) On-Demand
+- B) Reserved Instances (1 año)
+- C) Spot Instances
+- D) Savings Plans
+
+---
+
+**6.** ¿Cuál es la familia de instancias EC2 más adecuada para una base de datos en memoria que requiere una cantidad extremadamente grande de RAM?
+
+- A) Familia `t3` (uso general burstable)
+- B) Familia `c5` (cómputo intensivo)
+- C) Familia `r5` (memoria intensiva)
+- D) Familia `p3` (GPU)
+
+---
+
+**7.** Un administrador necesita asegurarse de que solo el tráfico HTTP (puerto 80) y HTTPS (puerto 443) llegue a sus instancias web EC2. ¿Qué herramienta de AWS usa para implementar esto?
+
+- A) IAM Policy
+- B) Network ACL y Security Group
+- C) AWS WAF únicamente
+- D) Bucket Policy
+
+---
+
+**8.** ¿Qué ocurre con los datos en un volumen **Amazon EBS** cuando se **detiene** (no termina) una instancia EC2?
+
+- A) Los datos se eliminan automáticamente
+- B) Los datos se archivan en S3 Glacier
+- C) Los datos persisten y están disponibles cuando la instancia se reinicia
+- D) Los datos se replican a otra zona de disponibilidad
+
+---
+
+<details>
+<summary>📋 Ver respuestas</summary>
+
+| # | Respuesta | Explicación |
+|---|---|---|
+| 1 | **B) Vertical = más recursos; Horizontal = más instancias** | Scale Up aumenta CPU/RAM de la misma instancia. Scale Out agrega nuevas instancias para distribuir carga. |
+| 2 | **C) IAM Role adjunto a la instancia** | Los Roles IAM proveen credenciales temporales rotadas automáticamente, eliminando el riesgo de credenciales expuestas. |
+| 3 | **D) Instance Store** | Instance Store es almacenamiento temporal adjunto físicamente al host. Se borra al detener, hibernar o terminar la instancia. |
+| 4 | **B) Scripts de configuración al primer arranque** | User Data ejecuta scripts (bash, PowerShell) la primera vez que la instancia arranca, automatizando la configuración inicial. |
+| 5 | **C) Spot Instances** | Spot ofrece hasta 90% de descuento para cargas tolerantes a interrupciones. AWS puede recuperar la instancia con 2 minutos de aviso. |
+| 6 | **C) Familia r5** | Las instancias de la familia `r` (memory optimized) están diseñadas para cargas que requieren grandes cantidades de RAM, como bases de datos en memoria (Redis, SAP HANA). |
+| 7 | **B) Network ACL y Security Group** | Los Security Groups controlan el tráfico a nivel de instancia. Las Network ACLs operan a nivel de subred. Ambos pueden usarse en conjunto. |
+| 8 | **C) Los datos persisten** | EBS es almacenamiento de red persistente. Los datos no se pierden al detener una instancia — solo al terminarla (y por defecto el volumen raíz se elimina al terminar). |
+
+</details>

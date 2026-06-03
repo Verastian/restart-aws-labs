@@ -177,3 +177,107 @@ Tecnología que permite crear versiones virtuales (software) de recursos físico
 ## VPC
 
 **Virtual Private Cloud.** Red virtual privada e aislada dentro de AWS donde se despliegan los recursos. Proporciona control completo sobre el entorno de red: rangos de direcciones IP, subredes, tablas de enrutamiento y gateways. Cada cuenta AWS tiene una VPC por defecto por región.
+
+---
+
+<a id="region" />
+
+## Región AWS
+
+Área geográfica independiente que contiene múltiples Zonas de Disponibilidad. AWS tiene más de 30 regiones en todo el mundo. Los datos almacenados en una región no salen de ella salvo configuración explícita. Factores clave para elegir región: cumplimiento normativo, latencia, servicios disponibles y costos.
+
+---
+
+<a id="az" />
+
+## Zona de Disponibilidad (AZ)
+
+Conjunto de uno o más centros de datos físicamente separados dentro de una Región AWS. Conectadas entre sí por redes privadas de fibra óptica de alta velocidad. Diseñadas para aislamiento de fallos: un desastre en una AZ no afecta a las demás. La latencia entre AZs de la misma región es inferior a 2 ms.
+
+---
+
+<a id="edge_location" />
+
+## Edge Location
+
+Punto de presencia distribuido globalmente usado por servicios como CloudFront, Route 53 y AWS WAF para entregar contenido con menor latencia al usuario final. Existen más de 400 Edge Locations en el mundo, más que las propias regiones AWS. No ejecutan cargas de trabajo completas como las regiones — solo cachean y procesan tráfico de red.
+
+---
+
+<a id="latencia" />
+
+## Latencia
+
+Tiempo que tarda un paquete de datos en viajar desde el origen hasta el destino. Se mide en milisegundos (ms). A menor latencia, más rápida es la experiencia del usuario. Es uno de los factores clave para seleccionar la región AWS donde desplegar una aplicación.
+
+---
+
+<a id="durabilidad" />
+
+## Durabilidad
+
+Probabilidad de que un dato NO se pierda permanentemente. Amazon S3 ofrece 99.999999999% (11 nueves) de durabilidad. Esto equivale estadísticamente a perder 1 objeto de cada 10 billones almacenados. Se logra replicando los datos en múltiples instalaciones físicas dentro de la región.
+
+---
+
+<a id="disponibilidad" />
+
+## Disponibilidad
+
+Porcentaje del tiempo que un servicio está operativo y accesible. S3 Standard ofrece 99.99% de disponibilidad, equivalente a menos de 53 minutos de inactividad al año. Es diferente a la durabilidad: un dato puede estar durablemente almacenado pero temporalmente inaccesible durante un incidente.
+
+---
+
+<a id="data_lake" />
+
+## Data Lake
+
+Repositorio centralizado que almacena grandes volúmenes de datos en su formato original (estructurados, semi-estructurados y no estructurados). Permite análisis posterior con herramientas de Big Data, Machine Learning e IA. Amazon S3 es el servicio de almacenamiento más utilizado para implementar Data Lakes en AWS.
+
+---
+
+<a id="bucket" />
+
+## Bucket (S3)
+
+Contenedor principal de Amazon S3 donde se almacenan los objetos. El nombre debe ser único globalmente en toda AWS (no solo en tu cuenta). Se crea en una región específica. Puede contener millones de objetos sin límite de tamaño total.
+
+---
+
+<a id="objeto_s3" />
+
+## Objeto (S3)
+
+Unidad básica de almacenamiento en Amazon S3. Compuesto por el contenido del archivo (hasta 5 TB), una clave única llamada Key (que identifica el objeto dentro del bucket), metadatos clave-valor y opcionalmente un ID de versión si el versionado está activo.
+
+---
+
+<a id="escalado_vertical" />
+
+## Escalado Vertical (Scale Up)
+
+Aumentar los recursos de una instancia EC2 existente: más vCPU, RAM o almacenamiento. Ejemplo: cambiar de `t3.micro` a `t3.large`. Requiere detener la instancia previamente. Tiene un límite máximo determinado por el tipo de instancia más grande disponible. También llamado "scale up".
+
+---
+
+<a id="escalado_horizontal" />
+
+## Escalado Horizontal (Scale Out)
+
+Agregar más instancias EC2 para distribuir la carga de trabajo entre varios servidores. Ejemplo: pasar de 1 a 10 servidores detrás de un Load Balancer. No requiere detener instancias existentes. Escala prácticamente sin límites. Es la estrategia preferida en arquitecturas cloud modernas. También llamado "scale out".
+
+---
+
+<a id="instance_store" />
+
+## Instance Store
+
+Almacenamiento temporal físicamente adjunto al servidor host de la instancia EC2. Ofrece muy alta velocidad de I/O porque los datos no viajan por la red. Sin embargo, los datos se pierden por completo al detener, hibernar o terminar la instancia. Ideal para caché, buffers y datos intermedios de procesamiento.
+
+---
+
+<a id="etiquetas" />
+
+## Etiquetas (Tags)
+
+Metadatos clave-valor que se agregan a recursos AWS para organizarlos, filtrarlos y gestionar costos. Ejemplo: `Environment=Production`, `Owner=DevOps`, `Project=Proyecto-Alpha`. Permiten analizar gastos por proyecto o equipo en AWS Cost Explorer y aplicar políticas de automatización basadas en etiquetas.

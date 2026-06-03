@@ -7,9 +7,9 @@ title: Servicios AWS
 
 Referencia teórica de los servicios AWS cubiertos en la certificación **Cloud Practitioner** y el track de **IA Generativa**.
 
-## Infraestructura Global
+## Fundamentos
 
-![](./imgs/01_infraestructura_global.png)
+- [Infraestructura Global de AWS](./infraestructura-global) — Regiones, AZs, Data Centers, Edge Locations
 
 ## Cómputo
 - [Amazon EC2](./computo/ec2) — Servidores virtuales en la nube
