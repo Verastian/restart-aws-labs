@@ -45,15 +45,15 @@ Durante el laboratorio, la instancia evolucionará:
 
 ## 💡 Conceptos clave
 
-:::info 🌐 VPC — Virtual Private Cloud
+:::info[🌐 VPC — Virtual Private Cloud]
 Red virtual privada e aislada dentro de AWS donde se despliegan los recursos. Controla el direccionamiento IP, las subredes y las reglas de enrutamiento. En este laboratorio se utilizará la **Lab VPC**.
 :::
 
-:::info 🛡️ Grupo de seguridad
+:::info[🛡️ Grupo de seguridad]
 Firewall virtual a nivel de instancia que define qué tráfico (protocolo, puerto, origen/destino) puede entrar o salir. Las reglas se aplican automáticamente a todas las instancias asociadas.
 :::
 
-:::info 📀 AMI — Amazon Machine Image
+:::info[📀 AMI — Amazon Machine Image]
 Plantilla que contiene el sistema operativo y el software preinstalado necesario para lanzar una instancia. Incluye permisos de lanzamiento y la asignación de dispositivos de almacenamiento.
 :::
 
@@ -139,7 +139,7 @@ Aún en el panel **Configuración de red**, configure el grupo de seguridad:
 
 ![](imgs/Pasted%20image%2020260528165322.png)
 
-:::info 🛡️ ¿Qué hace un grupo de seguridad?
+:::info[🛡️ ¿Qué hace un grupo de seguridad?]
 Un _grupo de seguridad_ actúa como <Term id="firewall">firewall virtual</Term> que controla el tráfico para una o más instancias. Se agregan _reglas_ a cada grupo que permiten el tráfico hacia o desde las instancias asociadas. Las nuevas reglas se aplican automáticamente a todas las instancias del grupo.
 :::
 
@@ -213,7 +213,7 @@ La instancia recibe un nombre DNS público que puede utilizarse para comunicarse
 
 Espere a que su instancia muestre:
 
-:::tip Actualice la consola si es necesario.
+:::tip[Actualice la consola si es necesario.]
 - **Estado de instancia:** `En ejecución`
 - **Comprobaciones de estado:** `2/2 comprobaciones aprobadas`
 :::
@@ -250,7 +250,7 @@ Esto muestra cómo se vería la consola de la instancia EC2 si se le conectara u
 
 ![](imgs/Pasted%20image%2020260528171024.png)
 
-:::tip 💡 Utilidad de la captura de pantalla
+:::tip[💡 Utilidad de la captura de pantalla]
 Si no puede acceder a su instancia a través de SSH o RDP, puede capturar una captura de pantalla y verla como imagen. Esto proporciona visibilidad del estado de la instancia y permite una resolución de problemas más rápida.
 :::
 
@@ -426,7 +426,7 @@ Ahora volverá a iniciar la instancia, que tendrá más memoria y más espacio e
 
 ![](imgs/Pasted%20image%2020260528174100.png)
 
-:::warning ⚠️ La IP pública cambia al reiniciar
+:::warning[⚠️ La IP pública cambia al reiniciar]
 Al detener y volver a iniciar una instancia EC2, AWS asigna una **nueva <Term id="ip">dirección IP pública</Term>**. Si necesita una IP fija, debe utilizar una **Elastic IP Address (EIP)**.
 :::
 
@@ -458,7 +458,7 @@ Aparecerá un mensaje indicando que al terminar una instancia respaldada por EBS
 
 ![](imgs/Pasted%20image%2020260528174414.png)
 
-:::info 🔒 Protección contra terminación en acción
+:::info[🔒 Protección contra terminación en acción]
 Notará que la instancia **no se terminó** y aparece un mensaje de error: _No se pudo terminar una instancia: la instancia no puede terminarse._ Esto se debe a que tiene habilitada la protección de terminación.
 :::
 
