@@ -35,7 +35,7 @@ Al finalizar este laboratorio, podrá:
 
 ## 🏗️ Arquitectura del laboratorio
 
-En este laboratorio construirá un servidor web Apache sobre una instancia EC2 dentro de una VPC. El diagrama anterior muestra el flujo completo: el usuario accede desde Internet a través del puerto 80, controlado por un grupo de seguridad, hasta la instancia EC2 con su volumen EBS adjunto.
+En este laboratorio construirá un <Term id="servidor_web">servidor web</Term> <Term id="apache">Apache</Term> sobre una <Term id="instancia">instancia EC2</Term> dentro de una <Term id="vpc">VPC</Term>. El diagrama anterior muestra el flujo completo: el usuario accede desde Internet a través del <Term id="puerto">puerto 80</Term>, controlado por un <Term id="grupo_seguridad">grupo de seguridad</Term>, hasta la instancia EC2 con su <Term id="ebs">volumen EBS</Term> adjunto.
 
 Durante el laboratorio, la instancia evolucionará:
 - Tipo: `t3.micro` → `t3.small`
@@ -140,7 +140,7 @@ Aún en el panel **Configuración de red**, configure el grupo de seguridad:
 ![](imgs/Pasted%20image%2020260528165322.png)
 
 :::info 🛡️ ¿Qué hace un grupo de seguridad?
-Un _grupo de seguridad_ actúa como firewall virtual que controla el tráfico para una o más instancias. Se agregan _reglas_ a cada grupo que permiten el tráfico hacia o desde las instancias asociadas. Las nuevas reglas se aplican automáticamente a todas las instancias del grupo.
+Un _grupo de seguridad_ actúa como <Term id="firewall">firewall virtual</Term> que controla el tráfico para una o más instancias. Se agregan _reglas_ a cada grupo que permiten el tráfico hacia o desde las instancias asociadas. Las nuevas reglas se aplican automáticamente a todas las instancias del grupo.
 :::
 
 En **Reglas de grupos de seguridad entrantes**, seleccione **Quitar**.
@@ -180,7 +180,7 @@ echo '<html><h1>Hello From Your Web Server!</h1></html>' > /var/www/html/index.h
 
 Este script realiza las siguientes acciones al iniciar la instancia:
 
-- Instala el servidor web Apache (`httpd`)
+- Instala el <Term id="servidor_web">servidor web</Term> <Term id="apache">Apache</Term> (`httpd`)
 - Configura Apache para que inicie automáticamente al arrancar
 - Activa el servidor web
 - Crea una página web de prueba en `/var/www/html/index.html`
@@ -258,7 +258,7 @@ Si no puede acceder a su instancia a través de SSH o RDP, puede capturar una ca
 
 ![](imgs/Pasted%20image%2020260528171121.png)
 
-### 🎉🎉 **¡Felicitaciones!** 🎉🎉
+<div className="felicitaciones">🎉🎉 ¡Felicitaciones! 🎉🎉</div>
 Ha explorado varias formas de monitorear su instancia.
 
 ---
@@ -281,7 +281,7 @@ Cuando lanzó la instancia EC2, proporcionó un script que instaló un servidor 
 
 **❓ Pregunta:** ¿Puede acceder a su servidor web? ¿Por qué no?
 
-Actualmente **no** puede acceder al servidor web porque el _grupo de seguridad_ no permite el tráfico entrante en el puerto 80, utilizado para solicitudes HTTP. Esta es una demostración del uso de un grupo de seguridad como firewall para restringir el tráfico de red.
+Actualmente **no** puede acceder al servidor web porque el _grupo de seguridad_ no permite el tráfico entrante en el <Term id="puerto">puerto 80</Term>, utilizado para solicitudes <Term id="http">HTTP</Term>. Esta es una demostración del uso de un grupo de seguridad como firewall para restringir el tráfico de red.
 
 Para corregir esto, actualizará el grupo de seguridad para permitir tráfico web en el puerto 80.
 
@@ -318,7 +318,7 @@ El grupo de seguridad actualmente no tiene reglas. Seleccione **Editar reglas de
 
 ![](imgs/Pasted%20image%2020260528172530.png)
 
-### 🎉🎉 **¡Felicitaciones!** 🎉🎉
+<div className="felicitaciones">🎉🎉 ¡Felicitaciones! 🎉🎉</div>
 Ha modificado exitosamente su grupo de seguridad para permitir el tráfico HTTP en su instancia Amazon EC2.
 
 ---
@@ -427,14 +427,14 @@ Ahora volverá a iniciar la instancia, que tendrá más memoria y más espacio e
 ![](imgs/Pasted%20image%2020260528174100.png)
 
 :::warning ⚠️ La IP pública cambia al reiniciar
-Al detener y volver a iniciar una instancia EC2, AWS asigna una **nueva dirección IP pública**. Si necesita una IP fija, debe utilizar una **Elastic IP Address (EIP)**.
+Al detener y volver a iniciar una instancia EC2, AWS asigna una **nueva <Term id="ip">dirección IP pública</Term>**. Si necesita una IP fija, debe utilizar una **Elastic IP Address (EIP)**.
 :::
 
 ![](imgs/Pasted%20image%2020260528174218.png)
 
 ![](imgs/Pasted%20image%2020260528174153.png)
 
-### 🎉🎉 **¡Felicitaciones!** 🎉🎉
+<div className="felicitaciones">🎉🎉 ¡Felicitaciones! 🎉🎉</div>
 Ha cambiado correctamente el tamaño de su instancia Amazon EC2: de `t3.micro` a `t3.small`, y el volumen EBS de `8 GiB` a `10 GiB`.
 
 ---
@@ -482,7 +482,7 @@ Notará que la instancia **no se terminó** y aparece un mensaje de error: _No s
 
 ![](imgs/Pasted%20image%2020260528174907.png)
 
-### 🎉🎉 **¡Felicitaciones!** 🎉🎉
+<div className="felicitaciones">🎉🎉 ¡Felicitaciones! 🎉🎉</div>
 Ha probado con éxito la protección contra terminación y finalizado su instancia.
 
 ---
