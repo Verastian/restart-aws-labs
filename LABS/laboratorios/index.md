@@ -9,4 +9,4 @@ Prácticas guiadas del Bootcamp AWS Restart. Cada laboratorio incluye capturas d
 
 | Lab | Título | Servicio |
 |-----|--------|----------|
-| [Lab 11](./labs-11/LAB-11-DESARROLLO) | Gestión de instancias EC2 | EC2 |
+| [Lab 11](./labs-11/LAB-11-Introduccion-AWS-EC2) | Introducción a Amazon EC2 | EC2 |
