@@ -1,0 +1,480 @@
+---
+sidebar_position: 3
+title: Lab 227 — Línea de comandos de Linux
+description: Ejecución de comandos esenciales de Linux en una instancia EC2 y uso del historial de Bash para mejorar el flujo de trabajo.
+---
+
+# 💻 Línea de comandos de Linux
+
+⏱️ **Tiempo estimado:** 30 minutos &nbsp;|&nbsp; 📊 **Nivel:** Básico &nbsp;|&nbsp; 🏷️ **Servicio:** Amazon EC2
+
+En este laboratorio se ejecutan comandos de Linux dentro de una instancia Amazon EC2 para obtener información sobre el sistema y la sesión activa, y se practican técnicas de búsqueda y reutilización del historial de comandos Bash.
+
+> **Nota:** Este laboratorio depende del material didáctico de cursos anteriores. Se recomienda haber completado el Lab 225 antes de continuar.
+
+---
+
+## 🎯 Temas que se abordarán
+
+Al finalizar este laboratorio, podrá:
+
+- ✅ Conectarse a una instancia EC2 de Amazon Linux vía SSH
+- ✅ Ejecutar comandos para obtener información del sistema y la sesión activa
+- ✅ Buscar y reutilizar comandos anteriores del historial de Bash
+
+---
+
+## 🏗️ Arquitectura del laboratorio
+
+Este laboratorio utiliza los siguientes componentes de AWS:
+
+- 🖥️ **Amazon EC2 — Host de comandos** (en subred pública): instancia de Amazon Linux donde se ejecutan todos los comandos del ejercicio.
+- 🌐 **Subred pública** dentro de una **Amazon VPC**.
+
+El acceso se realiza mediante SSH desde su equipo local hacia la IP pública de la instancia EC2.
+
+---
+
+## 💡 Conceptos clave
+
+:::info[🐚 Bash — Bourne Again Shell]
+Intérprete de comandos predeterminado en la mayoría de distribuciones Linux, incluyendo Amazon Linux. Bash ofrece funciones avanzadas como autocompletado con Tab, historial de comandos (CTRL+R), variables de entorno y scripting.
+:::
+
+:::info[📜 Historial de comandos en Bash]
+Bash almacena automáticamente todos los comandos ejecutados en la sesión. El comando `history` lista el historial completo. CTRL+R permite buscar comandos previos en tiempo real. El símbolo `!!` repite el último comando ejecutado.
+:::
+
+:::info[🌍 Variables de entorno en Linux]
+Las variables de entorno configuran el comportamiento del sistema y los programas. `TZ` define la zona horaria para los comandos de fecha/hora. Se pueden asignar temporalmente antes de un comando: `TZ=America/New_York date`.
+:::
+
+:::info[📅 Calendario juliano]
+El formato de fecha juliana usa una numeración continua de días dentro del año, sin reiniciar al cambiar de mes. Por ejemplo, el 1 de febrero es el día 32 del año. El comando `cal -j` muestra el calendario en este formato.
+:::
+
+---
+
+## Acceso a la Consola de Administración de AWS
+
+1. En la parte superior de estas instrucciones, haga clic en **Iniciar laboratorio**. Se abrirá un panel con el estado del laboratorio.
+
+   > 💡 Si necesita más tiempo, haga clic nuevamente en **Iniciar laboratorio** para reiniciar el cronómetro.
+
+2. Espere hasta que aparezca el mensaje **"Estado del laboratorio: listo"**. Cierre el panel haciendo clic en la **X**.
+
+3. Seleccione **AWS** en la parte superior. Se abrirá la Consola de Administración de AWS en una nueva pestaña.
+
+4. Organice las pestañas de la consola junto a estas instrucciones para seguir los pasos más fácilmente.
+
+---
+
+## Tarea 1: Conectarse a la instancia EC2 vía SSH
+
+En esta tarea se conectará a la instancia de Amazon Linux EC2. Las instrucciones difieren según su sistema operativo.
+
+### Usuarios de Windows — Conexión con PuTTY
+
+Estas instrucciones son para usuarios de Windows. Si usa macOS o Linux, pase a la sección siguiente.
+
+- Haga clic en el menú desplegable **Detalles** encima de estas instrucciones y seleccione **Mostrar**. Se abrirá la ventana con los datos de autenticación.
+
+![](../labs-225/imgs/Pasted%20image%2020260605170035.png)
+
+- Haga clic en **Descargar PPK** y guarde el archivo `labsuser227.ppk`.
+
+![](imgs/Pasted%20image%2020260606193031.png)
+
+- Anote la dirección **PublicIP**:
+
+```bash
+18.246.243.157
+```
+
+- Cierre el panel de detalles seleccionando la **X**.
+
+- Si no tiene PuTTY instalado, [descárguelo aquí](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) y abra `putty.exe`.
+
+- Configure su sesión de PuTTY con el archivo `.ppk` descargado. Consulte: [Conectarse a Linux con PuTTY](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/connect-linux-inst-from-windows.html).
+
+![](../labs-225/imgs/Pasted%20image%2020260605173727.png)
+
+---
+
+### Usuarios de macOS y Linux — Conexión con terminal
+
+Estas instrucciones son para usuarios de macOS/Linux. Si usa Windows, ya completó su tarea anterior.
+
+- Haga clic en el menú desplegable **Detalles** y seleccione **Mostrar**.
+
+![](../labs-225/imgs/Pasted%20image%2020260605170035.png)
+
+- Se abrirá la ventana de autenticación con sus credenciales del laboratorio.
+
+![](imgs/Pasted%20image%2020260606193123.png)
+
+- Haga clic en **Descargar PEM** y guarde el archivo `labsuser227.pem`.
+
+- Anote la dirección **PublicIP**:
+
+```bash
+18.246.243.157
+```
+
+- Cierre el panel de detalles.
+
+- Abra una terminal y navegue al directorio donde guardó el archivo `.pem`:
+
+```bash
+cd ~/Downloads
+```
+
+![](../labs-225/imgs/Pasted%20image%2020260605170803.png)
+
+- Cambie los permisos del archivo de clave para que sea de solo lectura:
+
+```bash
+chmod 400 labsuser227.pem
+```
+
+![](../labs-225/imgs/Pasted%20image%2020260605170834.png)
+
+- Conéctese a la instancia:
+
+```bash
+ssh -i labsuser227.pem ec2-user@<public-ip>
+```
+
+```bash
+ssh -i labsuser227.pem ec2-user@18.246.243.157
+```
+
+También puede obtener la IP desde la consola EC2 → **Instances** → instancia → pestaña **Details** → **IPv4 Public IP**:
+
+![](../labs-225/imgs/Pasted%20image%2020260605171319.png)
+
+- Cuando se le pida autorizar la primera conexión, introduzca `yes`. No se le pedirá contraseña porque usa un par de claves.
+
+![](imgs/Pasted%20image%2020260606195520.png)
+
+![](imgs/Pasted%20image%2020260606195958.png)
+
+:::tip[✅ Conexión exitosa]
+Al ver el prompt `[ec2-user@ip-xxx ~]$`, la conexión SSH está establecida y puede continuar con la siguiente tarea.
+:::
+
+---
+
+## Tarea 2: Ejecutar comandos conocidos
+
+En este ejercicio se ejecutan comandos para obtener información general sobre el sistema y la sesión activa.
+
+### Paso 1 — Identificar el usuario actual (`whoami`)
+
+Introduzca `whoa` y presione **Tab**. Bash completará automáticamente el comando a `whoami`. Presione **Enter**:
+
+```bash
+whoami
+```
+
+![](imgs/Pasted%20image%2020260606200047.png)
+
+### Paso 2 — Ver el nombre del equipo (`hostname`)
+
+Introduzca `hostname -s` y presione **Enter** para ver la versión abreviada del nombre del servidor:
+
+```bash
+hostname -s
+```
+
+![](imgs/Pasted%20image%2020260606200329.png)
+
+### Paso 3 — Ver el tiempo de actividad (`uptime`)
+
+Introduzca `uptime -p` y presione **Enter** para ver cuánto tiempo lleva corriendo el sistema en formato legible:
+
+```bash
+uptime -p
+```
+
+![](imgs/Pasted%20image%2020260606200354.png)
+
+![](imgs/Pasted%20image%2020260606191850.png)
+
+*Los comandos `whoami`, `hostname -s` y `uptime -p` proporcionan información básica sobre el sistema. Útiles para diagnóstico y solución de problemas.*
+
+### Paso 4 — Ver información de usuarios conectados (`who`)
+
+Introduzca `who -H -a` y presione **Enter** para ver los usuarios conectados y datos adicionales de la sesión:
+
+```bash
+who -H -a
+```
+
+![](imgs/Pasted%20image%2020260606200428.png)
+
+![](imgs/Pasted%20image%2020260606191956.png)
+
+*El comando `who -H -a` muestra: nombre de usuario, línea de terminal, hora de inicio de sesión, tiempo inactivo, PID del proceso y comentarios.*
+
+### Paso 5 — Mostrar fecha y hora en diferentes zonas horarias (`TZ=`)
+
+Introduzca los siguientes comandos para ver la fecha y hora en Nueva York y Los Ángeles:
+
+```bash
+TZ=America/New_York date
+```
+
+```bash
+TZ=America/Los_Angeles date
+```
+
+![](imgs/Pasted%20image%2020260606200527.png)
+
+![](imgs/Pasted%20image%2020260606192043.png)
+
+*La variable de entorno `TZ` define la zona horaria para el comando `date`. En este ejemplo se muestra la fecha y hora en formato: día, mes, fecha, hora, zona horaria y año.*
+
+:::note
+Si la hora configurada en el sistema no es correcta, la información de zona horaria calculada también será incorrecta.
+:::
+
+### Paso 6 — Mostrar el calendario con fechas julianas (`cal -j`)
+
+El formato juliano usa una secuencia continua de días sin reiniciar al cambiar de mes (el 1 de febrero es el día 32 del año). Ingrese:
+
+```bash
+cal -j
+```
+
+![](imgs/Pasted%20image%2020260606200903.png)
+
+![](imgs/Pasted%20image%2020260606192122.png)
+
+*El comando `cal -j` muestra el mes actual en formato de fecha juliana. Por ejemplo, el 24 de septiembre corresponde al día 245 del año.*
+
+### Paso 7 — Ver diferentes vistas del calendario
+
+```bash
+cal -s
+```
+
+```bash
+cal -m
+```
+
+![](imgs/Pasted%20image%2020260606200952.png)
+
+![](imgs/Pasted%20image%2020260606192206.png)
+
+*`cal -s` muestra el calendario con el domingo como primer día de la semana. `cal -m` lo muestra empezando por el lunes.*
+
+:::note
+Existen muchas formas de visualizar los calendarios. Consulte `man cal` para más opciones.
+:::
+
+### Paso 8 — Ver el ID de usuario y grupos (`id`)
+
+Ingrese `id ec2-user` y presione **Enter** para ver el ID único y la información de grupos del usuario actual:
+
+```bash
+id ec2-user
+```
+
+![](imgs/Pasted%20image%2020260606201031.png)
+
+![](imgs/Pasted%20image%2020260606192251.png)
+
+*La salida de `id ec2-user` muestra el UID (ID de usuario), GID (ID del grupo principal) y los grupos a los que pertenece el usuario.*
+
+---
+
+## Tarea 3: Mejorar el flujo de trabajo con el historial de comandos
+
+En esta tarea se reduce la carga de trabajo reutilizando comandos anteriores mediante el historial de Bash.
+
+### Paso 1 — Ver el historial de comandos
+
+Escriba `history` y presione **Enter** para ver todos los comandos ejecutados en esta sesión:
+
+```bash
+history
+```
+
+![](imgs/Pasted%20image%2020260606201105.png)
+
+![](imgs/Pasted%20image%2020260606192331.png)
+
+*Al ejecutar `history` se muestra la lista numerada de todos los comandos utilizados en el laboratorio.*
+
+### Paso 2 — Buscar en el historial inverso (CTRL+R)
+
+Presione **CTRL+R** para activar la búsqueda en el historial inverso. Luego introduzca `TZ` y presione **Tab**. Aparecerá un comando de fecha anterior que puede editar con las teclas de dirección:
+
+```
+(reverse-i-search)`TZ': TZ=America/New_York date
+```
+
+![](imgs/Pasted%20image%2020260606201311.png)
+
+![](imgs/Pasted%20image%2020260606201350.png)
+
+![](imgs/Pasted%20image%2020260606192356.png)
+
+*CTRL+R activa la búsqueda en el historial. Al introducir `TZ` y presionar Tab, Bash encuentra y muestra el comando de fecha anterior listo para editar y ejecutar.*
+
+:::note
+La búsqueda inversa con CTRL+R permite editar los comandos encontrados. Use las teclas de dirección para navegar entre resultados.
+:::
+
+### Paso 3 — Repetir el último comando (`!!`)
+
+Introduzca `date` y presione **Enter**. Luego introduzca `!!` y presione **Enter** nuevamente para ejecutar el mismo comando:
+
+```bash
+date
+```
+
+```bash
+!!
+```
+
+![](imgs/Pasted%20image%2020260606201452.png)
+
+![](imgs/Pasted%20image%2020260606192416.png)
+
+*El símbolo `!!` es un atajo para ejecutar el último comando introducido. En este ejemplo, `date` se ejecutó dos veces usando `!!`.*
+
+---
+
+## ✅ Laboratorio completo
+
+¡Felicitaciones! 🎉 Ha completado el laboratorio.
+
+1. Haga clic en **Finalizar laboratorio** en la parte superior de esta página y seleccione **Sí** para confirmar.
+2. Un panel indicará: *"Se ha iniciado la eliminación de los datos… Puede cerrar este cuadro de diálogo ahora"*.
+3. Haga clic en la **X** en la esquina superior derecha para cerrar el panel.
+
+---
+
+## 🧠 ¿Qué aprendiste?
+
+| Concepto | Lo que practicaste |
+|----------|-------------------|
+| **`whoami`** | Identificar el nombre del usuario actual en la sesión |
+| **`hostname -s`** | Ver el nombre abreviado del servidor |
+| **`uptime -p`** | Consultar el tiempo de actividad del sistema en formato legible |
+| **`who -H -a`** | Ver información de los usuarios conectados al sistema |
+| **`TZ=... date`** | Mostrar la fecha y hora en diferentes zonas horarias |
+| **`cal -j`** | Visualizar el calendario en formato de fecha juliana |
+| **`cal -s / cal -m`** | Cambiar la vista del calendario (domingo o lunes como primer día) |
+| **`id ec2-user`** | Ver el UID, GID y grupos de membresía del usuario |
+| **`history`** | Listar todos los comandos ejecutados en la sesión Bash |
+| **CTRL+R** | Búsqueda inversa en el historial de comandos |
+| **`!!`** | Repetir el último comando ejecutado |
+
+---
+
+## 📝 Preguntas estilo examen Cloud Practitioner
+
+---
+
+**1.** ¿Qué comando de Linux muestra el **nombre del usuario** actualmente conectado a la sesión?
+
+- A) `username`
+- B) `whoami`
+- C) `id -n`
+- D) `logname -u`
+
+---
+
+**2.** Un administrador necesita saber cuánto tiempo lleva activo un servidor Linux en **formato legible** (por ejemplo: "up 2 hours, 30 minutes"). ¿Qué comando debe usar?
+
+- A) `uptime`
+- B) `uptime -p`
+- C) `time -p`
+- D) `status -uptime`
+
+---
+
+**3.** ¿Qué tecla de acceso directo activa la **búsqueda en el historial inverso** en Bash?
+
+- A) CTRL+H
+- B) CTRL+F
+- C) CTRL+R
+- D) CTRL+S
+
+---
+
+**4.** En Bash, ¿qué hace el símbolo `!!`?
+
+- A) Cierra la sesión SSH actual
+- B) Repite el penúltimo comando ejecutado
+- C) Ejecuta el último comando introducido nuevamente
+- D) Muestra el historial de los últimos 10 comandos
+
+---
+
+**5.** ¿Qué muestra la salida del comando `cal -j`?
+
+- A) El calendario del mes en formato de semana laboral (lunes a viernes)
+- B) El calendario del año completo con todos los meses
+- C) El mes actual con fechas en formato juliano (numeración continua del año)
+- D) El calendario con la semana del lunes al domingo
+
+---
+
+**6.** Un ingeniero ejecuta `TZ=America/Chicago date` en una instancia EC2. ¿Qué resultado obtiene?
+
+- A) Cambia permanentemente la zona horaria del servidor a Chicago
+- B) Muestra la fecha y hora actuales en la zona horaria de Chicago sin cambiar la configuración del sistema
+- C) Instala el paquete de zonas horarias para la región de Chicago
+- D) Crea una variable de entorno permanente en el archivo `.bashrc`
+
+---
+
+**7.** ¿Qué información proporciona el comando `who -H -a` en Linux?
+
+- A) El historial completo de todos los usuarios del sistema
+- B) Los usuarios actualmente conectados, con columnas de nombre, terminal, hora de inicio, PID y tiempo inactivo
+- C) La lista de todos los grupos del sistema con sus miembros
+- D) Los permisos de todos los archivos del directorio actual
+
+---
+
+**8.** ¿Cuál de las siguientes afirmaciones sobre el historial de Bash es **correcta**?
+
+- A) El historial de comandos se borra automáticamente al cerrar la sesión SSH
+- B) Solo almacena los últimos 10 comandos ejecutados
+- C) El comando `history` muestra una lista numerada de todos los comandos ejecutados en la sesión
+- D) El historial de Bash no puede buscarse ni filtrarse desde la terminal
+
+---
+
+<details>
+<summary>📋 Ver respuestas</summary>
+
+| # | Respuesta | Explicación |
+|---|-----------|-------------|
+| 1 | **B) `whoami`** | `whoami` imprime el nombre del usuario actual. `id` también lo muestra pero con información adicional del UID y grupos. |
+| 2 | **B) `uptime -p`** | La opción `-p` (pretty) formatea la salida como "up X hours, Y minutes". Sin `-p`, la salida incluye la hora actual y carga del sistema. |
+| 3 | **C) CTRL+R** | CTRL+R activa el modo de búsqueda inversa en el historial de Bash. Al escribir caracteres, Bash busca el comando más reciente que los contenga. |
+| 4 | **C) Repite el último comando** | `!!` es un alias del último comando ejecutado. Es equivalente a presionar ↑ + Enter. Útil para repetir comandos largos o añadir `sudo !!`. |
+| 5 | **C) Fechas julianas** | `cal -j` muestra el mes actual con la numeración juliana: el día 1 de enero es el día 1, el 31 de diciembre es el día 365 o 366. |
+| 6 | **B) Muestra la fecha en Chicago sin cambiar el sistema** | Al anteponer `TZ=...` a un comando, la variable solo aplica para esa ejecución. No modifica la configuración del sistema. |
+| 7 | **B) Usuarios conectados con detalles** | `who -H` agrega encabezados a las columnas, `-a` muestra información completa: nombre, línea, hora, PID, inactividad y comentarios. |
+| 8 | **C) Lista numerada de comandos** | `history` muestra todos los comandos almacenados en el historial, con un número de línea que puede usarse para ejecutarlos con `!<número>`. |
+
+</details>
+
+---
+
+## 📚 Recursos adicionales
+
+- [Tipos de instancias de Amazon EC2](https://aws.amazon.com/ec2/instance-types)
+- [Imágenes de máquina de Amazon (AMI)](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AMIs.html)
+- [Conectarse a una instancia de Linux en AWS](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/connect-to-linux-instance.html)
+- [Verificación del estado de sus instancias](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/monitoring-system-instance-status-check.html)
+- [Amazon EC2 Service Quotas](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-resource-limits.html)
+- [Termine su instancia](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/terminating-instances.html)
+- [AWS Training and Certification](https://aws.amazon.com/training/)

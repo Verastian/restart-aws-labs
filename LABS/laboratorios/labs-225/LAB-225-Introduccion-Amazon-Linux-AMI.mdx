@@ -1,0 +1,366 @@
+---
+sidebar_position: 2
+title: Lab 225 — Introducción a Amazon Linux (AMI)
+description: Conexión SSH a una instancia EC2 con Amazon Linux y exploración del sistema de ayuda man.
+---
+
+# 🐧 Introducción a Amazon Linux (AMI)
+
+⏱️ **Tiempo estimado:** 30 minutos &nbsp;|&nbsp; 📊 **Nivel:** Básico &nbsp;|&nbsp; 🏷️ **Servicio:** Amazon EC2
+
+Este laboratorio está diseñado para reforzar los conocimientos sobre las funcionalidades básicas de la interfaz de línea de comandos de Linux. Se utiliza **Secure Shell (SSH)** para acceder a una instancia de Amazon Linux (AMI) dentro de los laboratorios Vocareum y luego se usa el comando `man` para explorar el sistema de ayuda estándar del sistema operativo.
+
+---
+
+## 🎯 Temas que se abordarán
+
+Al finalizar este laboratorio, podrá:
+
+- ✅ Conectarse a una instancia EC2 de Amazon Linux vía SSH desde Windows y macOS/Linux
+- ✅ Comprender el propósito del comando `man`
+- ✅ Utilizar la función de búsqueda en las páginas de manual
+- ✅ Identificar los encabezados principales de las páginas de manual
+
+---
+
+## 🏗️ Arquitectura del laboratorio
+
+Este laboratorio utiliza los siguientes componentes de AWS creados automáticamente como parte del entorno Vocareum:
+
+- 🖥️ **Amazon EC2 — Host de comandos** (en subred pública): instancia a la que se conectará para ejecutar los comandos del ejercicio.
+- 🌐 **Subred pública** dentro de una **Amazon VPC**.
+
+El acceso se realiza mediante SSH desde su equipo local hacia la IP pública de la instancia EC2.
+
+---
+
+## 💡 Conceptos clave
+
+:::info[🔐 SSH — Secure Shell]
+Protocolo criptográfico que permite el acceso remoto seguro a servidores. Utiliza un **par de claves** (pública/privada) para la autenticación: la clave privada queda en el cliente y la pública se instala en el servidor. Elimina la necesidad de contraseñas para autenticarse.
+:::
+
+:::info[🖼️ AMI — Amazon Machine Image]
+Plantilla preconfigurada que contiene el sistema operativo, las configuraciones y el software necesarios para lanzar una instancia EC2. En este laboratorio se utiliza **Amazon Linux** como AMI base — una distribución Linux optimizada y mantenida por AWS.
+:::
+
+:::info[📖 Man Pages — Sistema de ayuda de Linux]
+Sistema de documentación integrado en Linux que describe comandos, funciones del sistema y archivos de configuración. Se accede con `man <comando>`. Las páginas están organizadas en secciones como `NAME`, `SYNOPSIS`, `DESCRIPTION`, `OPTIONS` y `EXAMPLES`.
+:::
+
+:::info[🔑 PEM vs PPK — Formatos de clave SSH]
+AWS genera claves en formato **PEM** (Privacy Enhanced Mail). Los usuarios de macOS/Linux usan el archivo `.pem` directamente con el cliente SSH. Los usuarios de Windows con PuTTY necesitan convertir el `.pem` a formato **PPK** con PuTTYgen, o descargar directamente el `.ppk` desde Vocareum.
+:::
+
+---
+
+## Acceso a la Consola de Administración de AWS
+
+1. En la parte superior de estas instrucciones, haga clic en **Iniciar laboratorio** para comenzar el proceso. Se abrirá un panel con el estado del laboratorio.
+
+   > 💡 Si necesita más tiempo, haga clic nuevamente en **Iniciar laboratorio** para reiniciar el cronómetro.
+
+2. Espere hasta que aparezca el mensaje **"Estado del laboratorio: listo"**. Luego cierre el panel haciendo clic en la **X**.
+
+3. Seleccione **AWS** en la parte superior. Esto abrirá la **Consola de Administración de AWS** en una nueva pestaña. El sistema lo autenticará automáticamente.
+
+   > 💡 Si no se abre una nueva pestaña, busque el banner del navegador que bloquea ventanas emergentes y elija **Permitir ventanas emergentes**.
+
+4. Organice las pestañas de la consola junto a estas instrucciones para poder seguir los pasos más fácilmente.
+
+---
+
+## Tarea 1: Conectarse a la instancia EC2 vía SSH
+
+En esta tarea se conectará a la instancia de Amazon Linux EC2 usando SSH. Las instrucciones difieren según su sistema operativo.
+
+### Usuarios de Windows — Conexión con PuTTY
+
+Estas instrucciones son para usuarios de Windows. Si usa macOS o Linux, pase a la sección siguiente.
+
+- Haga clic en el menú desplegable **Detalles** que aparece encima de estas instrucciones y seleccione **Mostrar**. Se abrirá una ventana con los datos de autenticación.
+
+![](imgs/Pasted%20image%2020260605170035.png)
+
+- Haga clic en **Descargar PPK** y guarde el archivo `labsuser.ppk` (habitualmente en la carpeta Descargas).
+
+![](imgs/Pasted%20image%2020260605173214.png)
+
+- Anote la dirección **PublicIP** que aparece en la ventana:
+
+```bash
+52.12.114.65
+```
+
+- Cierre el panel de detalles seleccionando la **X**.
+
+- Si no tiene PuTTY instalado, [descárguelo aquí](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) y abra `putty.exe`.
+
+- Configure su sesión de PuTTY usando el archivo `.ppk` descargado. Consulte la guía oficial: [Conectarse a Linux con PuTTY](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/connect-linux-inst-from-windows.html).
+
+![](imgs/Pasted%20image%2020260605173727.png)
+
+---
+
+### Usuarios de macOS y Linux — Conexión con terminal
+
+Estas instrucciones son para usuarios de macOS/Linux. Si usa Windows, ya completó su tarea anterior.
+
+- Haga clic en el menú desplegable **Detalles** y seleccione **Mostrar**.
+
+![](imgs/Pasted%20image%2020260605170035.png)
+
+- Se abrirá la ventana de autenticación con sus credenciales del laboratorio.
+
+![](imgs/Pasted%20image%2020260605170129.png)
+
+- Haga clic en **Descargar PEM** y guarde el archivo `labsuser.pem`.
+
+- Anote la dirección **PublicIP**:
+
+```bash
+52.12.114.65
+```
+
+- Cierre el panel de detalles.
+
+- Abra una terminal y navegue al directorio donde guardó el archivo `labsuser.pem`:
+
+```bash
+cd ~/Downloads
+```
+
+![](imgs/Pasted%20image%2020260605170803.png)
+
+- Cambie los permisos del archivo de clave para que sea de solo lectura:
+
+```bash
+chmod 400 labsuser.pem
+```
+
+![](imgs/Pasted%20image%2020260605170834.png)
+
+:::note
+El paso `chmod 400` es obligatorio. SSH rechazará la conexión si el archivo de clave tiene permisos demasiado abiertos (`WARNING: UNPROTECTED PRIVATE KEY FILE!`).
+:::
+
+- Conéctese a la instancia reemplazando `<public-ip>` por la IP anotada:
+
+```bash
+ssh -i labsuser.pem ec2-user@<public-ip>
+```
+
+```bash
+ssh -i labsuser.pem ec2-user@52.12.114.65
+```
+
+Alternativamente, puede obtener la IP desde la consola EC2 → **Instances** → casilla de la instancia → pestaña **Details** → campo **IPv4 Public IP**:
+
+![](imgs/Pasted%20image%2020260605171319.png)
+
+- Cuando se le pida autorizar la primera conexión a este servidor SSH, introduzca `yes`. Como usa un par de claves, no se le pedirá contraseña.
+
+![](imgs/Pasted%20image%2020260605171414.png)
+
+![](imgs/Pasted%20image%2020260605171443.png)
+
+:::tip[✅ Conexión exitosa]
+Al ver el banner de bienvenida de Amazon Linux y el prompt `[ec2-user@ip-xxx ~]$`, la conexión SSH está establecida correctamente.
+:::
+
+---
+
+## Tarea 2: Explorar las páginas de ayuda de Linux
+
+En este ejercicio se usa la terminal Bash para explorar el sistema de ayuda estándar de Linux — las **páginas de manual** (man pages).
+
+### Paso 1 — Abrir las páginas de manual del comando `man`
+
+Introduzca el siguiente comando en la terminal y presione Enter:
+
+```bash
+man man
+```
+
+![](imgs/Pasted%20image%2020260605171550.png)
+
+![](imgs/Pasted%20image%2020260605171732.png)
+
+*En la línea de comandos, se ha ingresado la orden `man man`. La página de manual describe el propio comando `man`.*
+
+:::note
+Puede navegar por las páginas de ayuda con las **teclas de dirección** ↑ y ↓. Para salir, presione `q`.
+:::
+
+### Paso 2 — Identificar los encabezados principales
+
+Busque los siguientes encabezados en la pantalla del terminal. Estos son los más importantes en las páginas de manual:
+
+| Encabezado | Contenido |
+|------------|-----------|
+| `NAME` | Nombre y descripción breve del comando |
+| `SYNOPSIS` | Sintaxis de uso y opciones disponibles |
+| `DESCRIPTION` | Descripción detallada del funcionamiento |
+| `OPTIONS` | Lista de opciones y flags del comando |
+| `EXAMPLES` | Ejemplos de uso práctico |
+| `FILES` | Archivos relacionados con el comando |
+| `SEE ALSO` | Comandos y recursos relacionados |
+
+### Paso 3 — Buscar en las páginas de manual
+
+Utilice `man` con una expresión regular para buscar páginas relacionadas:
+
+```bash
+man .*
+```
+
+![](imgs/Pasted%20image%2020260605172355.png)
+
+*La página muestra información importante sobre las utilidades de las man pages.*
+
+### Paso 4 — Explorar otra página de manual
+
+Observe el encabezado `DESCRIPTION` y los números de sección. Luego visualice la página del comando `ls`:
+
+```bash
+man ls
+```
+
+![](imgs/Pasted%20image%2020260605172254.png)
+
+*El encabezado `DESCRIPTION` proporciona una descripción general de un comando.*
+
+### Paso 5 — Salir de las páginas de manual
+
+Para salir de las páginas de manual, introduzca `q`.
+
+---
+
+## ✅ Laboratorio completo
+
+¡Felicitaciones! 🎉 Ha completado el laboratorio.
+
+1. Haga clic en **Finalizar laboratorio** en la parte superior de esta página y seleccione **Sí** para confirmar.
+2. Un panel indicará: *"Se ha iniciado la eliminación de los datos… Puede cerrar este cuadro de diálogo ahora"*.
+3. Haga clic en la **X** en la esquina superior derecha para cerrar el panel.
+
+---
+
+## 🧠 ¿Qué aprendiste?
+
+| Concepto | Lo que practicaste |
+|----------|-------------------|
+| **SSH con par de claves** | Conexión segura a una instancia EC2 sin contraseña, usando archivo PEM/PPK |
+| **Formatos PEM y PPK** | PEM para macOS/Linux; PPK para PuTTY en Windows |
+| **chmod 400** | Protección del archivo de clave privada contra accesos no autorizados |
+| **Amazon Linux AMI** | Sistema operativo basado en Linux optimizado para AWS |
+| **Instancia t3.micro** | 1 vCPU, 1 GiB de memoria — tipo de instancia de propósito general |
+| **comando `man`** | Acceso al sistema de documentación integrado de Linux |
+| **Secciones man pages** | NAME, SYNOPSIS, DESCRIPTION, OPTIONS, EXAMPLES, SEE ALSO |
+| **Navegación man** | Teclas de dirección para desplazarse, `q` para salir |
+
+---
+
+## 📝 Preguntas estilo examen Cloud Practitioner
+
+---
+
+**1.** ¿Cuál es el propósito principal de una **Amazon Machine Image (AMI)**?
+
+- A) Almacenar datos de objetos de forma distribuida en AWS
+- B) Proporcionar una plantilla con el sistema operativo y la configuración para lanzar instancias EC2
+- C) Monitorear el rendimiento de las instancias EC2
+- D) Gestionar los permisos de acceso a los recursos de AWS
+
+---
+
+**2.** Un estudiante intenta conectarse a una instancia EC2 de Amazon Linux desde macOS usando SSH y recibe el error `WARNING: UNPROTECTED PRIVATE KEY FILE!`. ¿Cuál es la solución más probable?
+
+- A) Regenerar el par de claves en la consola de EC2
+- B) Ejecutar `chmod 400 labsuser.pem` para restringir los permisos del archivo
+- C) Reiniciar la instancia EC2 desde la consola AWS
+- D) Cambiar el grupo de seguridad para permitir el tráfico SSH
+
+---
+
+**3.** ¿Qué formato de archivo de clave privada utiliza **PuTTY** para conectarse a instancias EC2 desde Windows?
+
+- A) `.pem` — Privacy Enhanced Mail
+- B) `.pub` — Public Key
+- C) `.ppk` — PuTTY Private Key
+- D) `.key` — OpenSSH Key
+
+---
+
+**4.** ¿Qué comando de Linux muestra la página de manual del comando `ls`?
+
+- A) `help ls`
+- B) `info ls`
+- C) `man ls`
+- D) `ls --help`
+
+---
+
+**5.** ¿Qué tecla se presiona para **salir** de las páginas de manual (`man`) en Linux?
+
+- A) `Escape`
+- B) `q`
+- C) `Ctrl+C`
+- D) `x`
+
+---
+
+**6.** ¿Qué encabezado de las páginas de manual proporciona la **descripción general** de un comando, incluyendo su funcionamiento detallado?
+
+- A) `NAME`
+- B) `SYNOPSIS`
+- C) `DESCRIPTION`
+- D) `SEE ALSO`
+
+---
+
+**7.** En este laboratorio se usa una instancia de tipo `t3.micro`. ¿Cuáles son sus características de cómputo?
+
+- A) 2 vCPU y 4 GiB de memoria
+- B) 1 vCPU y 1 GiB de memoria
+- C) 4 vCPU y 8 GiB de memoria
+- D) 2 vCPU y 2 GiB de memoria
+
+---
+
+**8.** ¿Qué usuario se utiliza por defecto para conectarse vía SSH a una instancia de **Amazon Linux** en EC2?
+
+- A) `root`
+- B) `admin`
+- C) `ubuntu`
+- D) `ec2-user`
+
+---
+
+<details>
+<summary>📋 Ver respuestas</summary>
+
+| # | Respuesta | Explicación |
+|---|-----------|-------------|
+| 1 | **B) Plantilla con SO y configuración** | Una AMI es la plantilla base que define el sistema operativo, software preinstalado y configuración para lanzar instancias EC2. |
+| 2 | **B) chmod 400** | El error indica que el archivo de clave tiene permisos demasiado abiertos. `chmod 400` lo restringe a solo lectura para el propietario. |
+| 3 | **C) PPK** | PuTTY usa su propio formato de clave PPK. El archivo `.ppk` se puede descargar directamente desde Vocareum o generar con PuTTYgen desde un `.pem`. |
+| 4 | **C) man ls** | La sintaxis es `man <comando>`. Muestra la documentación oficial del comando en el sistema. |
+| 5 | **B) q** | `q` (quit) es la tecla estándar para salir del paginador `less` que usan las man pages. |
+| 6 | **C) DESCRIPTION** | El encabezado `DESCRIPTION` provee la explicación detallada del funcionamiento del comando, sus opciones y comportamiento. |
+| 7 | **B) 1 vCPU y 1 GiB** | La instancia `t3.micro` tiene 2 vCPU y 1 GiB de RAM. Es la opción de menor coste en la familia t3. |
+| 8 | **D) ec2-user** | Amazon Linux usa `ec2-user` como usuario predeterminado para SSH. Ubuntu usa `ubuntu`, y Debian usa `admin` o `debian`. |
+
+</details>
+
+---
+
+## 📚 Recursos adicionales
+
+- [Tipos de instancias de Amazon EC2](https://aws.amazon.com/ec2/instance-types)
+- [Imágenes de máquina de Amazon (AMI)](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AMIs.html)
+- [Conectarse a una instancia de Linux en AWS](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/connect-to-linux-instance.html)
+- [Conectarse con PuTTY desde Windows](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/connect-linux-inst-from-windows.html)
+- [Verificación del estado de sus instancias](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/monitoring-system-instance-status-check.html)
+- [Amazon EC2 Service Quotas](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-resource-limits.html)
+- [AWS Training and Certification](https://aws.amazon.com/training/)
