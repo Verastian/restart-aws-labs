@@ -16,6 +16,7 @@ RUN cd website && npm run build
 
 # ── Stage 2: Serve ──────────────────────────────────────────
 FROM nginx:1.27-alpine
+LABEL org.opencontainers.image.source=https://github.com/Verastian/restart-aws-labs
 
 # Copiar build generado
 COPY --from=builder /app/website/build /usr/share/nginx/html
