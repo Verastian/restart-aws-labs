@@ -1,8 +1,6 @@
 services:
   docs:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: ghcr.io/verastian/restart-aws-labs:latest
     container_name: restart-labs-docs
     ports:
       - "8080:80"
