@@ -18,4 +18,5 @@ services:
 
 networks:
   nginx-proxy:
-    external: true
+    name: nginx-proxy
+    driver: bridge
