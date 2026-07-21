@@ -1,0 +1,28 @@
+direction: right
+
+edge: "Edge Location" {
+  shape: image
+  icon: https://icons.terrastruct.com/aws%2F_General%2FInternet-alt1_light-bg.svg
+}
+
+cloudfront: "Amazon CloudFront\nCDN — caché de contenido" {
+  shape: image
+  icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FAmazon-CloudFront.svg
+}
+route53: "Route 53\nDNS global" {
+  shape: image
+  icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FAmazon-Route-53.svg
+}
+waf: "AWS WAF\nFirewall de aplicaciones" {
+  shape: image
+  icon: https://icons.terrastruct.com/aws%2FSecurity%2C%20Identity%2C%20&%20Compliance%2FAWS-WAF.svg
+}
+shield: "AWS Shield\nProtección DDoS" {
+  shape: image
+  icon: https://icons.terrastruct.com/aws%2FSecurity%2C%20Identity%2C%20&%20Compliance%2FAWS-Shield.svg
+}
+
+edge -> cloudfront
+edge -> route53
+edge -> waf
+edge -> shield

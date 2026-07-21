@@ -1,0 +1,16 @@
+direction: right
+
+cliente: "Tu computador\nClave privada (.pem / .ppk)" {
+  shape: image
+  icon: https://icons.terrastruct.com/dev%2Fssh.svg
+}
+
+servidor: "Instancia EC2\nClave pública instalada" {
+  shape: image
+  icon: https://icons.terrastruct.com/aws%2FCompute%2FAmazon-EC2.svg
+}
+
+cliente -> servidor: "SSH — autenticación\nsin contraseña" {
+  style.stroke: "#16a34a"
+  style.font-color: "#166534"
+}

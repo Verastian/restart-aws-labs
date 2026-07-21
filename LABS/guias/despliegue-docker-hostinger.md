@@ -7,6 +7,8 @@ title: Despliegue en Hostinger con Docker
 
 Guía para desplegar esta documentación en un VPS de Hostinger usando Docker Compose y Nginx Proxy Manager.
 
+![Flujo de despliegue: DNS → Docker Manager → contenedor → Nginx Proxy Manager → HTTPS](diagrams/flujo-deploy.svg)
+
 ## Prerrequisitos
 
 - VPS de Hostinger con Docker Manager habilitado

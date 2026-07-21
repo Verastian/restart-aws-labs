@@ -1,0 +1,63 @@
+edge: "Edge Locations\nCloudFront · Route 53 · WAF · Shield" {
+  shape: image
+  icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FAmazon-CloudFront.svg
+}
+
+region1: "Región us-east-1 — Norte de Virginia" {
+  style.stroke: "#FF9900"
+  style.fill: "#FFFBF2"
+
+  az1a: "AZ us-east-1a" {
+    style.stroke: "#6366f1"
+    style.fill: "#EEF2FF"
+    dc1: "Data Center A1" {
+      shape: image
+      icon: https://icons.terrastruct.com/aws%2F_Group%20Icons%2FCorporate-data-center_light-bg.svg
+    }
+    dc2: "Data Center A2" {
+      shape: image
+      icon: https://icons.terrastruct.com/aws%2F_Group%20Icons%2FCorporate-data-center_light-bg.svg
+    }
+  }
+  az1b: "AZ us-east-1b" {
+    style.stroke: "#6366f1"
+    style.fill: "#EEF2FF"
+    dc3: "Data Center B1" {
+      shape: image
+      icon: https://icons.terrastruct.com/aws%2F_Group%20Icons%2FCorporate-data-center_light-bg.svg
+    }
+  }
+  az1c: "AZ us-east-1c" {
+    style.stroke: "#6366f1"
+    style.fill: "#EEF2FF"
+    dc4: "Data Center C1" {
+      shape: image
+      icon: https://icons.terrastruct.com/aws%2F_Group%20Icons%2FCorporate-data-center_light-bg.svg
+    }
+  }
+}
+
+region2: "Región eu-west-1 — Irlanda" {
+  style.stroke: "#FF9900"
+  style.fill: "#FFFBF2"
+
+  az2a: "AZ eu-west-1a" {
+    style.stroke: "#6366f1"
+    style.fill: "#EEF2FF"
+    dc5: "Data Center D1" {
+      shape: image
+      icon: https://icons.terrastruct.com/aws%2F_Group%20Icons%2FCorporate-data-center_light-bg.svg
+    }
+  }
+  az2b: "AZ eu-west-1b" {
+    style.stroke: "#6366f1"
+    style.fill: "#EEF2FF"
+    dc6: "Data Center E1" {
+      shape: image
+      icon: https://icons.terrastruct.com/aws%2F_Group%20Icons%2FCorporate-data-center_light-bg.svg
+    }
+  }
+}
+
+edge -> region1.az1a.dc1
+edge -> region2.az2a.dc5

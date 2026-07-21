@@ -1,0 +1,21 @@
+direction: right
+
+ami: "AMI\nAmazon Linux 2023" {
+  shape: image
+  icon: https://icons.terrastruct.com/aws%2FCompute%2FAmazon-EC2_AMI_light-bg.svg
+}
+
+contenido: "Incluye:\n• Sistema operativo\n• Software preinstalado\n• Permisos de lanzamiento\n• Mapeo de volúmenes" {
+  shape: rectangle
+  style.stroke: "#94a3b8"
+  style.fill: "#F8FAFC"
+  style.font-color: "#334155"
+}
+
+instancia: "Instancia EC2\nen ejecución" {
+  shape: image
+  icon: https://icons.terrastruct.com/aws%2FCompute%2FAmazon-EC2.svg
+}
+
+ami -> contenido: "define"
+contenido -> instancia: "lanza"

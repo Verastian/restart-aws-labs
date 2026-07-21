@@ -1,0 +1,43 @@
+direction: right
+
+usuario: "Usuario" {
+  shape: image
+  icon: https://icons.terrastruct.com/aws%2F_General%2FUser_light-bg.svg
+}
+
+bedrock: "Amazon Bedrock" {
+  style.stroke: "#8c4fff"
+  style.fill: "#F5F0FF"
+
+  agente: "Agente Bedrock" {
+    shape: image
+    icon: https://icons.terrastruct.com/aws%2FMachine%20Learning%2FMachine-Learning.svg
+  }
+  modelo: "Foundation Model\nClaude 3 Sonnet" {
+    shape: image
+    icon: https://icons.terrastruct.com/aws%2FMachine%20Learning%2FAmazon-SageMaker.svg
+  }
+  agente -> modelo: "3. Prompt + contexto" {
+    style.stroke: "#8c4fff"
+  }
+}
+
+kb: "Knowledge Base" {
+  style.stroke: "#6366f1"
+  style.fill: "#EEF2FF"
+
+  docs: "S3\nDocumentos PDF / Markdown" {
+    shape: image
+    icon: https://icons.terrastruct.com/aws%2FStorage%2FAmazon-Simple-Storage-Service-S3.svg
+  }
+  index: "Vector Store\nOpenSearch" {
+    shape: image
+    icon: https://icons.terrastruct.com/aws%2FAnalytics%2FAmazon-Elasticsearch-Service.svg
+  }
+  docs -> index
+}
+
+usuario -> bedrock.agente
+bedrock.agente -> kb.index: "1. Búsqueda semántica"
+kb.index -> bedrock.agente: "2. Contexto relevante"
+bedrock.modelo -> usuario: "4. Respuesta"

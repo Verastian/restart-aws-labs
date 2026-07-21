@@ -1,0 +1,44 @@
+direction: right
+
+triggers: "Triggers (Disparadores)" {
+  style.stroke: "#64748b"
+  style.fill: "#F8FAFC"
+
+  api: "API Gateway\nPetición HTTP" {
+    shape: image
+    icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FAmazon-API-Gateway.svg
+  }
+  s3in: "S3 Event\nArchivo subido" {
+    shape: image
+    icon: https://icons.terrastruct.com/aws%2FStorage%2FAmazon-Simple-Storage-Service-S3.svg
+  }
+  sns: "SNS\nMensaje" {
+    shape: image
+    icon: https://icons.terrastruct.com/aws%2FApplication%20Integration%2FAmazon-Simple-Notification-Service-SNS.svg
+  }
+}
+
+fn: "Función Lambda\nPython / Node.js · Máx. 15 min" {
+  shape: image
+  icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Lambda.svg
+}
+
+destinos: "Destinos" {
+  style.stroke: "#64748b"
+  style.fill: "#F8FAFC"
+
+  db: "DynamoDB\nBase de datos" {
+    shape: image
+    icon: https://icons.terrastruct.com/aws%2FDatabase%2FAmazon-DynamoDB.svg
+  }
+  s3out: "S3\nResultado" {
+    shape: image
+    icon: https://icons.terrastruct.com/aws%2FStorage%2FAmazon-Simple-Storage-Service-S3.svg
+  }
+}
+
+triggers.api -> fn
+triggers.s3in -> fn
+triggers.sns -> fn
+fn -> destinos.db
+fn -> destinos.s3out

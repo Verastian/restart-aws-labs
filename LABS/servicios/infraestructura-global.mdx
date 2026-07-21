@@ -10,7 +10,7 @@ description: Regiones, Zonas de Disponibilidad, Centros de Datos y Edge Location
 
 La infraestructura global de AWS es la base física y lógica sobre la que se ejecutan todos sus servicios. Comprenderla es fundamental para diseñar aplicaciones resilientes, de baja latencia y conformes con requisitos regulatorios.
 
-![Jerarquía de la Infraestructura Global AWS](./imgs/06_infraestructura_jerarquia.png)
+![Jerarquía de la Infraestructura Global AWS](./diagrams/jerarquia.svg)
 
 ---
 
@@ -96,6 +96,8 @@ Los precios varían entre regiones. La misma instancia EC2 puede costar diferent
 ## ⚡ Edge Locations y Points of Presence
 
 Las Edge Locations son centros de presencia distribuidos globalmente, distintos a las regiones y AZs. Su propósito es **acercar el contenido al usuario final**.
+
+![Una Edge Location distribuye tráfico entre CloudFront, Route 53, WAF y Shield](./diagrams/edge-locations.svg)
 
 | Servicio | Uso de Edge Locations |
 |---|---|

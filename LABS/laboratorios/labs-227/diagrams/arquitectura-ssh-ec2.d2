@@ -1,0 +1,23 @@
+direction: right
+
+usuario: "Tu computador" {
+  shape: image
+  icon: https://icons.terrastruct.com/aws%2F_General%2FUser_light-bg.svg
+}
+
+vpc: "Amazon VPC" {
+  style.stroke: "#8c4fff"
+  style.fill: "#F5F0FF"
+
+  subred: "Subred Pública" {
+    style.stroke: "#6366f1"
+    style.fill: "#EEF2FF"
+
+    instancia: "Instancia EC2\nAmazon Linux — Host de comandos" {
+      shape: image
+      icon: https://icons.terrastruct.com/aws%2FCompute%2FAmazon-EC2.svg
+    }
+  }
+}
+
+usuario -> vpc.subred.instancia: "SSH (puerto 22)\na la IP pública"

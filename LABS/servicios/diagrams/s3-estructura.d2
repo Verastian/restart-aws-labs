@@ -1,0 +1,28 @@
+direction: right
+
+usuario: "Aplicación / Usuario" {
+  shape: image
+  icon: https://icons.terrastruct.com/aws%2F_General%2FUser_light-bg.svg
+}
+
+bucket: "S3 Bucket — mi-empresa-backups-prod" {
+  style.stroke: "#16a34a"
+  style.fill: "#F0FDF4"
+
+  obj1: "Key: docs/contrato.pdf\nValue + Metadata + VersionID" {
+    shape: image
+    icon: https://icons.terrastruct.com/aws%2FStorage%2FAmazon-Simple-Storage-Service-S3.svg
+  }
+  obj2: "Key: imgs/logo.png\nValue + Metadata + VersionID" {
+    shape: image
+    icon: https://icons.terrastruct.com/aws%2FStorage%2FAmazon-Simple-Storage-Service-S3.svg
+  }
+  obj3: "Key: videos/demo.mp4\nValue + Metadata" {
+    shape: image
+    icon: https://icons.terrastruct.com/aws%2FStorage%2FAmazon-Simple-Storage-Service-S3.svg
+  }
+}
+
+usuario -> bucket.obj1
+usuario -> bucket.obj2
+usuario -> bucket.obj3

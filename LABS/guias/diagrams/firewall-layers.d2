@@ -1,0 +1,37 @@
+direction: right
+
+internet: "Internet" {
+  shape: cloud
+  style.stroke: "#94a3b8"
+}
+
+hostinger_fw: "Firewall de infraestructura\n(panel Hostinger)" {
+  shape: image
+  icon: https://icons.terrastruct.com/infra%2F003-firewall.svg
+}
+
+os_fw: "nftables\n(firewall del SO)" {
+  shape: image
+  icon: https://icons.terrastruct.com/aws%2F_General%2FGeneric_Firewall.svg
+}
+
+docker: "Docker\n(cadenas iptables propias)" {
+  shape: image
+  icon: https://icons.terrastruct.com/dev%2Fdocker.svg
+}
+
+container: "Contenedor\nrestart-labs-docs" {
+  shape: rectangle
+  style.stroke: "#16a34a"
+  style.fill: "#F0FDF4"
+}
+
+internet -> hostinger_fw: "bloqueado\npor defecto" {
+  style.stroke: "#dc2626"
+  style.font-color: "#991b1b"
+}
+hostinger_fw -> os_fw: "reglas creadas\nen el panel" {
+  style.stroke: "#16a34a"
+}
+os_fw -> docker
+docker -> container

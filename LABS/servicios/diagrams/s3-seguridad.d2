@@ -1,0 +1,27 @@
+direction: right
+
+user_iam: "Usuario IAM / Rol" {
+  shape: image
+  icon: https://icons.terrastruct.com/aws%2F_General%2FUser_light-bg.svg
+}
+policy: "IAM Policy\nPermisos de usuario" {
+  shape: image
+  icon: https://icons.terrastruct.com/aws%2FSecurity%2C%20Identity%2C%20&%20Compliance%2FAWS-Identity-and-Access-Management-IAM_Role_light-bg.svg
+}
+ext: "Cuenta externa / Público" {
+  shape: image
+  icon: https://icons.terrastruct.com/aws%2F_General%2FUser_light-bg.svg
+}
+bucket: "S3 Bucket\n+ Bucket Policy" {
+  shape: image
+  icon: https://icons.terrastruct.com/aws%2FStorage%2FAmazon-Simple-Storage-Service-S3.svg
+}
+
+user_iam -> policy: "1. ¿Qué puede hacer?"
+policy -> bucket: "2. Evalúa permisos" {
+  style.stroke: "#16a34a"
+  style.font-color: "#166534"
+}
+ext -> bucket: "Bucket Policy\ncontrola acceso" {
+  style.stroke: "#d97706"
+}

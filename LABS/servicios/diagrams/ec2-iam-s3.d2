@@ -1,0 +1,42 @@
+direction: right
+
+inseguro: "Sin IAM Role" {
+  style.stroke: "#ef4444"
+  style.fill: "#FEF2F2"
+
+  ec2_bad: "EC2\nCredenciales hardcodeadas" {
+    shape: image
+    icon: https://icons.terrastruct.com/aws%2FCompute%2FAmazon-EC2.svg
+  }
+  s3_bad: "S3 Bucket" {
+    shape: image
+    icon: https://icons.terrastruct.com/aws%2FStorage%2FAmazon-Simple-Storage-Service-S3.svg
+  }
+  ec2_bad -> s3_bad: "inseguro" {
+    style.stroke: "#dc2626"
+    style.font-color: "#991b1b"
+  }
+}
+
+seguro: "Con IAM Role" {
+  style.stroke: "#16a34a"
+  style.fill: "#F0FDF4"
+
+  rol: "IAM Role\ns3:GetObject · s3:PutObject" {
+    shape: image
+    icon: https://icons.terrastruct.com/aws%2FSecurity%2C%20Identity%2C%20&%20Compliance%2FAWS-Identity-and-Access-Management-IAM_Role_light-bg.svg
+  }
+  ec2_good: "EC2\nSin credenciales" {
+    shape: image
+    icon: https://icons.terrastruct.com/aws%2FCompute%2FAmazon-EC2.svg
+  }
+  s3_good: "S3 Bucket" {
+    shape: image
+    icon: https://icons.terrastruct.com/aws%2FStorage%2FAmazon-Simple-Storage-Service-S3.svg
+  }
+  rol -> ec2_good: "asume"
+  ec2_good -> s3_good: "seguro y recomendado" {
+    style.stroke: "#16a34a"
+    style.font-color: "#166534"
+  }
+}

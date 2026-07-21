@@ -4,7 +4,11 @@ title: Lab 225 — Introducción a Amazon Linux (AMI)
 description: Conexión SSH a una instancia EC2 con Amazon Linux y exploración del sistema de ayuda man.
 ---
 
+import IconEC2 from './diagrams/icon-ec2.svg';
+
 # 🐧 Introducción a Amazon Linux (AMI)
+
+<IconEC2 title="Amazon EC2" width="72" height="72" />
 
 ⏱️ **Tiempo estimado:** 30 minutos &nbsp;|&nbsp; 📊 **Nivel:** Básico &nbsp;|&nbsp; 🏷️ **Servicio:** Amazon EC2
 
@@ -32,16 +36,22 @@ Este laboratorio utiliza los siguientes componentes de AWS creados automáticame
 
 El acceso se realiza mediante SSH desde su equipo local hacia la IP pública de la instancia EC2.
 
+![Arquitectura del laboratorio — acceso SSH a EC2 en subred pública](diagrams/arquitectura-ssh-ec2.svg)
+
 ---
 
 ## 💡 Conceptos clave
 
 :::info[🔐 SSH — Secure Shell]
 Protocolo criptográfico que permite el acceso remoto seguro a servidores. Utiliza un **par de claves** (pública/privada) para la autenticación: la clave privada queda en el cliente y la pública se instala en el servidor. Elimina la necesidad de contraseñas para autenticarse.
+
+![Autenticación SSH: la clave privada en tu computador valida contra la clave pública instalada en la instancia](diagrams/concepto-ssh.svg)
 :::
 
 :::info[🖼️ AMI — Amazon Machine Image]
 Plantilla preconfigurada que contiene el sistema operativo, las configuraciones y el software necesarios para lanzar una instancia EC2. En este laboratorio se utiliza **Amazon Linux** como AMI base — una distribución Linux optimizada y mantenida por AWS.
+
+![Una AMI define el contenido que se usa para lanzar una instancia EC2](diagrams/concepto-ami.svg)
 :::
 
 :::info[📖 Man Pages — Sistema de ayuda de Linux]

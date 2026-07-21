@@ -1,0 +1,27 @@
+direction: right
+
+dns: "DNS — Registro A\nrestart-labs → IP del VPS" {
+  shape: rectangle
+  style.stroke: "#64748b"
+  style.fill: "#F8FAFC"
+}
+docker: "Docker Manager (Hostinger)\nDeploy from URL" {
+  shape: image
+  icon: https://icons.terrastruct.com/dev%2Fdocker.svg
+}
+container: "Contenedor\nrestart-labs-docs :8080" {
+  shape: rectangle
+  style.stroke: "#6366f1"
+  style.fill: "#EEF2FF"
+}
+npm: "Nginx Proxy Manager\nSSL — Let's Encrypt" {
+  shape: image
+  icon: https://icons.terrastruct.com/dev%2Fnginx.svg
+}
+https: "https://restart-labs.devera.cloud" {
+  shape: rectangle
+  style.stroke: "#16a34a"
+  style.fill: "#F0FDF4"
+}
+
+dns -> docker -> container -> npm -> https

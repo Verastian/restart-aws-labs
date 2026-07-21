@@ -1,0 +1,54 @@
+github: "GitHub\npush a main" {
+  shape: image
+  icon: https://icons.terrastruct.com/dev%2Fgithub.svg
+}
+
+actions: "GitHub Actions" {
+  style.stroke: "#64748b"
+  style.fill: "#F8FAFC"
+
+  checkout: "Checkout del repo" { shape: rectangle }
+  login: "Login a GHCR" { shape: rectangle }
+  build: "docker build + push\nghcr.io/verastian/restart-aws-labs:latest" {
+    shape: image
+    icon: https://icons.terrastruct.com/dev%2Fdocker.svg
+  }
+  deploy_step: "Hostinger deploy API\ncopia docker-compose.yml" { shape: rectangle }
+
+  checkout -> login -> build -> deploy_step
+}
+
+vps: "VPS Hostinger — 147.93.10.106\ndocker compose up -d" {
+  shape: rectangle
+  style.stroke: "#FF9900"
+  style.fill: "#FFFBF2"
+}
+
+container: "restart-labs-docs :80" {
+  shape: image
+  icon: https://icons.terrastruct.com/dev%2Fdocker.svg
+}
+
+network: "red nginx-proxy\n(externa)" {
+  shape: rectangle
+  style.stroke: "#6366f1"
+  style.fill: "#EEF2FF"
+}
+
+npm: "Nginx Proxy Manager\nreverse proxy con SSL" {
+  shape: image
+  icon: https://icons.terrastruct.com/dev%2Fnginx.svg
+}
+
+https: "https://restart-labs.devera.cloud" {
+  shape: rectangle
+  style.stroke: "#16a34a"
+  style.fill: "#F0FDF4"
+}
+
+github -> actions.checkout
+actions.deploy_step -> vps
+vps -> container
+container -> network
+network -> npm
+npm -> https

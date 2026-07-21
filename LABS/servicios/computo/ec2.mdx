@@ -4,13 +4,17 @@ title: Amazon EC2
 description: Servidores virtuales en la nube — tipos, escalado, seguridad y almacenamiento.
 ---
 
+import IconEC2 from '../diagrams/icon-ec2.svg';
+
 # 🖥️ Amazon EC2 — Elastic Compute Cloud
+
+<IconEC2 title="Amazon EC2" width="72" height="72" />
 
 ⏱️ **Tiempo de lectura estimado:** 20 minutos &nbsp;|&nbsp; 🏷️ **Relevancia:** AWS Cloud Practitioner CLF-C02
 
 Amazon EC2 proporciona capacidad de cómputo escalable en la nube. Permite lanzar <Term id="instancia">servidores virtuales</Term> en minutos, configurar seguridad y red, y pagar solo por lo que se usa.
 
-![Estructura básica de EC2](../imgs/03_ec2_basico.png)
+![Estructura básica de EC2](../diagrams/ec2-basico.svg)
 
 ---
 
@@ -88,7 +92,7 @@ Script que se ejecuta automáticamente en el primer arranque.
 
 ## 📈 Escalabilidad
 
-![Escalado EC2 — Vertical vs Horizontal](../imgs/09_ec2_escalado.png)
+![Escalado EC2 — Vertical vs Horizontal](../diagrams/ec2-escalado.svg)
 
 ### Escalado Vertical (Scale Up)
 
@@ -139,7 +143,7 @@ Los Security Groups son <Term id="firewall">firewalls virtuales</Term> que contr
 
 ## 🔑 IAM Roles para EC2
 
-![EC2 accediendo a S3 mediante IAM Role](../imgs/10_ec2_iam_s3.png)
+![EC2 accediendo a S3 mediante IAM Role](../diagrams/ec2-iam-s3.svg)
 
 Un IAM Role permite que una instancia EC2 interactúe con otros servicios AWS **sin almacenar credenciales** en el servidor:
 

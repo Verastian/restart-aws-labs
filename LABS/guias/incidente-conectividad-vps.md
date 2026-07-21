@@ -54,6 +54,8 @@ healthcheck:
 **Causa raíz:**
 Hostinger gestiona un **firewall de infraestructura** (capa de red) separado del firewall del sistema operativo. Este firewall actúa antes de que el tráfico llegue al VPS. Por defecto, todos los puertos estaban bloqueados.
 
+![Dos capas de firewall independientes: infraestructura Hostinger → nftables del SO → Docker → contenedor](diagrams/firewall-layers.svg)
+
 **Solución:** Crear un firewall en el panel de Hostinger con las siguientes reglas:
 
 | Puerto | Protocolo | Acción  | Uso |
@@ -84,30 +86,7 @@ La API `VPS_createNewProjectV1` de Hostinger solo copia el archivo `docker-compo
 
 ### Arquitectura del flujo de despliegue
 
-```
-GitHub (push a main)
-       │
-       ▼
-GitHub Actions
-  ├─ Checkout del repositorio
-  ├─ Login a GHCR
-  ├─ docker build + push → ghcr.io/verastian/restart-aws-labs:latest
-  └─ Hostinger deploy API → copia docker-compose.yml al VPS
-              │
-              ▼
-     VPS Hostinger (147.93.10.106)
-       docker compose up -d
-              │
-              ▼
-  restart-labs-docs:80 ──→ red nginx-proxy (externa)
-              │
-              ▼
-  Nginx Proxy Manager
-  reverse proxy con SSL
-              │
-              ▼
-  https://restart-labs.devera.cloud
-```
+![Flujo de despliegue: GitHub Actions construye y publica la imagen, Hostinger la despliega en el VPS detrás de Nginx Proxy Manager](diagrams/flujo-deploy-detallado.svg)
 
 ### Configuración final del `docker-compose.yml`
 

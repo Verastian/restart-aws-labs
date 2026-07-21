@@ -1,0 +1,43 @@
+direction: right
+
+vertical: "Escalado Vertical (Scale Up)\nAumentar recursos de la misma instancia" {
+  style.stroke: "#d97706"
+  style.fill: "#FFFBEB"
+
+  v1: "t3.micro\n2 vCPU · 1 GiB" {
+    shape: image
+    icon: https://icons.terrastruct.com/aws%2FCompute%2FAmazon-EC2.svg
+  }
+  v2: "t3.large\n2 vCPU · 8 GiB" {
+    shape: image
+    icon: https://icons.terrastruct.com/aws%2FCompute%2FAmazon-EC2.svg
+  }
+  v1 -> v2: "detener → cambiar tipo → iniciar" {
+    style.stroke: "#d97706"
+  }
+}
+
+horizontal: "Escalado Horizontal (Scale Out)\nAgregar más instancias" {
+  style.stroke: "#16a34a"
+  style.fill: "#F0FDF4"
+
+  lb: "Load Balancer" {
+    shape: image
+    icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FElastic-Load-Balancing.svg
+  }
+  h1: "Instancia 1" {
+    shape: image
+    icon: https://icons.terrastruct.com/aws%2FCompute%2FAmazon-EC2.svg
+  }
+  h2: "Instancia 2" {
+    shape: image
+    icon: https://icons.terrastruct.com/aws%2FCompute%2FAmazon-EC2.svg
+  }
+  h3: "Instancia 3" {
+    shape: image
+    icon: https://icons.terrastruct.com/aws%2FCompute%2FAmazon-EC2.svg
+  }
+  lb -> h1
+  lb -> h2
+  lb -> h3
+}

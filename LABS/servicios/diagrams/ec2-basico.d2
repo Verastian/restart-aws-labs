@@ -1,0 +1,41 @@
+direction: right
+
+usuario: "Usuario SSH / Navegador" {
+  shape: image
+  icon: https://icons.terrastruct.com/aws%2F_General%2FUser_light-bg.svg
+}
+igw: "Internet Gateway" {
+  shape: image
+  icon: https://icons.terrastruct.com/aws%2F_General%2FInternet-gateway_light-bg.svg
+}
+rol: "IAM Role\nPermisos del servidor" {
+  shape: image
+  icon: https://icons.terrastruct.com/aws%2FSecurity%2C%20Identity%2C%20&%20Compliance%2FAWS-Identity-and-Access-Management-IAM_Role_light-bg.svg
+}
+
+vpc: "VPC — Virtual Private Cloud" {
+  style.stroke: "#8c4fff"
+  style.fill: "#F5F0FF"
+
+  subred: "Subred Pública — Zona de Disponibilidad A" {
+    style.stroke: "#6366f1"
+    style.fill: "#EEF2FF"
+
+    instancia: "Instancia EC2\nt3.micro · Amazon Linux 2023" {
+      shape: image
+      icon: https://icons.terrastruct.com/aws%2FCompute%2FAmazon-EC2.svg
+    }
+    disco: "EBS Volume\n8 GB gp3" {
+      shape: image
+      icon: https://icons.terrastruct.com/aws%2FStorage%2FAmazon-Elastic-Block-Store-EBS.svg
+    }
+    instancia -> disco: "volumen raíz" {
+      style.stroke: "#6366f1"
+    }
+  }
+}
+
+usuario -> igw -> vpc.subred.instancia
+rol -> vpc.subred.instancia: "asume" {
+  style.stroke: "#16a34a"
+}
