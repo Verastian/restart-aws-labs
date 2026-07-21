@@ -1,6 +1,7 @@
 services:
   docs:
     image: ghcr.io/verastian/restart-aws-labs:latest
+    pull_policy: always
     container_name: restart-labs-docs
     ports:
       - "8080:80"
