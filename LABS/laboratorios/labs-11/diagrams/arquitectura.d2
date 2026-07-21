@@ -1,0 +1,51 @@
+direction: right
+
+usuario: "Usuario" {
+  shape: image
+  icon: https://icons.terrastruct.com/aws%2F_General%2FUser_light-bg.svg
+}
+
+internet: "Internet" {
+  shape: cloud
+  style.fill: "#EEF2FF"
+  style.stroke: "#6366f1"
+  style.font-color: "#3730a3"
+}
+
+aws: "AWS Cloud" {
+  style.stroke: "#FF9900"
+  style.stroke-dash: 3
+  style.fill: "#FFFBF2"
+  style.stroke-width: 2
+
+  vpc: "Lab VPC" {
+    style.stroke: "#8c4fff"
+    style.fill: "#F5F0FF"
+
+    sg: "Security Group\nWeb Server security group" {
+      shape: image
+      icon: https://icons.terrastruct.com/aws%2F_General%2FGeneric_Firewall.svg
+    }
+
+    ec2: "Instancia EC2\nWeb Server (Apache)" {
+      shape: image
+      icon: https://icons.terrastruct.com/aws%2FCompute%2FAmazon-EC2.svg
+    }
+
+    ebs: "Volumen EBS\n10 GiB" {
+      shape: image
+      icon: https://icons.terrastruct.com/aws%2FStorage%2FAmazon-Elastic-Block-Store-EBS.svg
+    }
+
+    sg -> ec2: "permite\npuerto 80 / HTTP" {
+      style.stroke: "#16a34a"
+      style.font-color: "#166534"
+    }
+    ec2 -> ebs: "volumen raíz" {
+      style.stroke: "#6366f1"
+    }
+  }
+}
+
+usuario -> internet: "HTTP"
+internet -> aws.vpc.sg: "puerto 80"

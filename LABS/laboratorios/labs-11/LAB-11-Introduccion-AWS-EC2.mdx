@@ -4,11 +4,16 @@ title: Lab 11 — Introducción a Amazon EC2
 description: Lanzamiento, monitoreo, redimensionamiento y terminación de instancias EC2.
 ---
 
+import IconEC2 from './diagrams/icon-ec2.svg';
+import IconCloudWatch from './diagrams/icon-cloudwatch.svg';
+
 # 🖥️ Introducción a Amazon EC2
+
+<IconEC2 title="Amazon EC2" width="72" height="72" />
 
 ⏱️ **Tiempo estimado:** 45 minutos &nbsp;|&nbsp; 📊 **Nivel:** Básico &nbsp;|&nbsp; 🏷️ **Servicio:** Amazon EC2
 
-![Arquitectura del laboratorio — Servidor Web EC2](imgs/LAB-11-arquitectura.png)
+![Arquitectura del laboratorio — Servidor Web EC2](diagrams/arquitectura.svg)
 
 Este laboratorio ofrece una visión general del lanzamiento, redimensionamiento, administración y monitorización de una instancia de Amazon EC2.
 
@@ -47,14 +52,20 @@ Durante el laboratorio, la instancia evolucionará:
 
 :::info[🌐 VPC — Virtual Private Cloud]
 Red virtual privada e aislada dentro de AWS donde se despliegan los recursos. Controla el direccionamiento IP, las subredes y las reglas de enrutamiento. En este laboratorio se utilizará la **Lab VPC**.
+
+![Una VPC aísla la instancia EC2; solo entra el tráfico que el Security Group permite](diagrams/concepto-vpc.svg)
 :::
 
 :::info[🛡️ Grupo de seguridad]
 Firewall virtual a nivel de instancia que define qué tráfico (protocolo, puerto, origen/destino) puede entrar o salir. Las reglas se aplican automáticamente a todas las instancias asociadas.
+
+![Sin una regla de entrada el tráfico se bloquea; con la regla HTTP se permite](diagrams/concepto-sg.svg)
 :::
 
 :::info[📀 AMI — Amazon Machine Image]
 Plantilla que contiene el sistema operativo y el software preinstalado necesario para lanzar una instancia. Incluye permisos de lanzamiento y la asignación de dispositivos de almacenamiento.
+
+![Una AMI define el contenido que se usa para lanzar una instancia EC2](diagrams/concepto-ami.svg)
 :::
 
 ---
@@ -222,6 +233,8 @@ Espere a que su instancia muestre:
 
 ## Tarea 2: Monitorear su instancia
 
+<IconCloudWatch title="Amazon CloudWatch" width="64" height="64" />
+
 El monitoreo es fundamental para mantener la confiabilidad, disponibilidad y rendimiento de las instancias EC2.
 
 - Seleccione la instancia marcando la casilla y navegue hasta la pestaña **Verificaciones de estado**.
@@ -326,6 +339,8 @@ Ha modificado exitosamente su grupo de seguridad para permitir el tráfico HTTP 
 ## Tarea 4: Cambiar el tamaño de su instancia
 
 A medida que cambian las necesidades, puede descubrir que su instancia está sobreutilizada (muy pequeña) o infrautilizada (muy grande). Amazon EC2 permite cambiar el _tipo de instancia_ y el tamaño del disco sin necesidad de crear una nueva instancia.
+
+![Escalado vertical: de t3.micro/8 GiB a t3.small/10 GiB](diagrams/escalado-vertical.svg)
 
 ### Detener la instancia
 
@@ -500,6 +515,8 @@ Ha probado con éxito la protección contra terminación y finalizado su instanc
 ## 🧠 ¿Qué aprendiste?
 
 En este laboratorio practicaste los siguientes conceptos y habilidades clave de Amazon EC2:
+
+![Ciclo de vida de una instancia EC2: Pendiente → En ejecución → Detenida → Terminada](diagrams/ciclo-vida-ec2.svg)
 
 | Concepto | Lo que hiciste |
 |----------|----------------|

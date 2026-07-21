@@ -1,0 +1,30 @@
+direction: right
+
+pendiente: "Pendiente" {
+  style.fill: "#FEF3C7"
+  style.stroke: "#d97706"
+}
+ejecucion: "En ejecución" {
+  style.fill: "#DCFCE7"
+  style.stroke: "#16a34a"
+}
+detenida: "Detenida" {
+  style.fill: "#E2E8F0"
+  style.stroke: "#64748b"
+}
+terminada: "Terminada" {
+  style.fill: "#FEE2E2"
+  style.stroke: "#dc2626"
+}
+
+pendiente -> ejecucion: "aprovisionamiento\ncompleto"
+ejecucion -> detenida: "Detener instancia"
+detenida -> ejecucion: "Iniciar instancia"
+ejecucion -> terminada: "Terminar\n(requiere deshabilitar\nprotección)" {
+  style.stroke: "#dc2626"
+  style.font-color: "#991b1b"
+}
+detenida -> terminada: "Terminar" {
+  style.stroke: "#dc2626"
+  style.font-color: "#991b1b"
+}

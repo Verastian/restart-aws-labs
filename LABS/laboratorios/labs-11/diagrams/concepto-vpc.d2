@@ -1,0 +1,27 @@
+internet: "Internet" {
+  shape: cloud
+  style.stroke: "#94a3b8"
+  style.font-color: "#475569"
+}
+
+vpc: "Amazon VPC — Lab VPC" {
+  style.stroke: "#8c4fff"
+  style.fill: "#F5F0FF"
+
+  instancia: "Instancia EC2" {
+    shape: image
+    icon: https://icons.terrastruct.com/aws%2FCompute%2FAmazon-EC2.svg
+  }
+}
+
+nota: "red virtual privada y aislada\ndentro de AWS" {
+  shape: text
+  style.font-size: 14
+  style.italic: true
+  style.font-color: "#64748b"
+}
+
+internet -> vpc.instancia: "tráfico controlado\npor el Security Group" {
+  style.stroke-dash: 3
+  style.stroke: "#64748b"
+}

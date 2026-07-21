@@ -1,0 +1,14 @@
+direction: right
+
+antes: "t3.micro\n2 vCPU · 1 GiB RAM\nEBS 8 GiB" {
+  style.fill: "#F1F5F9"
+  style.stroke: "#64748b"
+}
+despues: "t3.small\n2 vCPU · 2 GiB RAM\nEBS 10 GiB" {
+  style.fill: "#EEF2FF"
+  style.stroke: "#6366f1"
+  style.font-color: "#3730a3"
+}
+antes -> despues: "1. Detener instancia\n2. Cambiar tipo de instancia\n3. Modificar volumen EBS\n4. Iniciar instancia" {
+  style.stroke: "#6366f1"
+}
