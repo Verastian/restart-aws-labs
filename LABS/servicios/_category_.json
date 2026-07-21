@@ -2,7 +2,7 @@
   "label": "Servicios AWS",
   "position": 2,
   "collapsible": true,
-  "collapsed": false,
+  "collapsed": true,
   "link": {
     "type": "doc",
     "id": "servicios/index"
