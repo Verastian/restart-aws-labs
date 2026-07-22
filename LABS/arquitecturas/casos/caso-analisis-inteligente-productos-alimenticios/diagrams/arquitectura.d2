@@ -1,0 +1,137 @@
+direction: right
+grid-columns: 3
+grid-gap: 60
+
+lane1: "LANE 1: USER INTERFACE (FRONT-END)" {
+  style.stroke: "#0EA5E9"
+  style.fill: "#F0F9FF"
+
+  client_app: "CLIENT APP (Mobile / Web)" {
+    style.stroke: "#334155"
+
+    usuario: "Usuario\n(App móvil)" {
+      shape: image
+      icon: https://icons.terrastruct.com/aws%2F_General%2FMobile-client_light-bg.svg
+    }
+    barcode: "Barcode Scanner\n(JS / Native SDK)" {
+      shape: rectangle
+      style.stroke: "#64748b"
+      style.fill: "#F8FAFC"
+    }
+    image_upload: "Food Image Upload\n(Cámara)" {
+      shape: rectangle
+      style.stroke: "#64748b"
+      style.fill: "#F8FAFC"
+    }
+    usuario -> barcode
+    usuario -> image_upload
+  }
+
+  s3_lane1: "Amazon S3\nRaw Food Images" {
+    shape: image
+    icon: https://icons.terrastruct.com/aws%2FStorage%2FAmazon-Simple-Storage-Service-S3.svg
+  }
+  client_app.image_upload -> s3_lane1: "Image Flow — imagen original" {
+    style.stroke: "#3B82F6"
+  }
+}
+
+lane2: "LANE 2: API & INTEGRATION" {
+  style.stroke: "#F59E0B"
+  style.fill: "#FFFBEB"
+
+  api_layer: "API Layer" {
+    style.stroke: "#334155"
+
+    apigw: "Amazon API Gateway\nREST / HTTP API" {
+      shape: image
+      icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FAmazon-API-Gateway.svg
+    }
+    lambda_orch: "AWS Lambda\nOrchestrator\n(Serverless Backend)" {
+      shape: image
+      icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Lambda.svg
+    }
+    apigw -> lambda_orch: "Service Call — invocación" {
+      style.stroke: "#6B7280"
+    }
+    lambda_orch -> apigw: "Response — resultado final" {
+      style.stroke: "#F97316"
+    }
+  }
+}
+
+lane3: "LANE 3: BACK-END SERVICES & STORAGE" {
+  style.stroke: "#8C4FFF"
+  style.fill: "#F5F0FF"
+  grid-rows: 3
+  grid-gap: 40
+
+  services: "SERVICES" {
+    style.stroke: "#334155"
+    dynamodb: "Amazon DynamoDB\nNoSQL Database" {
+      shape: image
+      icon: https://icons.terrastruct.com/aws%2FDatabase%2FAmazon-DynamoDB.svg
+    }
+  }
+
+  image_processing: "IMAGE PROCESSING" {
+    style.stroke: "#334155"
+    s3_lane3: "Amazon S3\nRaw Images\n(repositorio central)" {
+      shape: image
+      icon: https://icons.terrastruct.com/aws%2FStorage%2FAmazon-Simple-Storage-Service-S3.svg
+    }
+    lambda_img: "Lambda\nImage Processor" {
+      shape: image
+      icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Lambda.svg
+    }
+    rekognition: "Amazon Rekognition\nImage Recognition" {
+      shape: image
+      icon: https://icons.terrastruct.com/aws%2FMachine%20Learning%2FAmazon-Rekognition.svg
+    }
+    s3_lane3 -> lambda_img: "Trigger — evento ObjectCreated" {
+      style.stroke: "#EAB308"
+      style.font-color: "#854d0e"
+    }
+    lambda_img -> rekognition: "Service Call — análisis de imagen" {
+      style.stroke: "#6B7280"
+    }
+  }
+
+  ai_insights: "AI & INSIGHTS" {
+    style.stroke: "#334155"
+    bedrock: "Amazon Bedrock\nGenerative AI" {
+      shape: image
+      icon: https://icons.terrastruct.com/aws%2FMachine%20Learning%2FMachine-Learning.svg
+    }
+  }
+}
+
+# Cross-lane connections
+lane1.client_app.barcode -> lane2.api_layer.apigw: "Data Flow — código de barras" {
+  style.stroke: "#F97316"
+}
+lane2.api_layer.lambda_orch -> lane3.image_processing.s3_lane3: "Image Flow — guarda imagen" {
+  style.stroke: "#3B82F6"
+}
+lane1.s3_lane1 -> lane3.image_processing.s3_lane3: "mismo bucket" {
+  style.stroke: "#94A3B8"
+  style.stroke-dash: 3
+}
+lane3.image_processing.rekognition -> lane2.api_layer.lambda_orch: "Data Flow — resultado del reconocimiento" {
+  style.stroke: "#F97316"
+}
+lane2.api_layer.lambda_orch <-> lane3.services.dynamodb: "Database Query — nutrición / historial" {
+  style.stroke: "#6B7280"
+}
+lane2.api_layer.lambda_orch <-> lane3.ai_insights.bedrock: "AI Analysis — prompt / evaluación generada" {
+  style.stroke: "#F97316"
+}
+
+legend: "Leyenda" {
+  near: bottom-right
+  style.stroke: "#334155"
+  data_flow: "Data Flow" { shape: rectangle; style.fill: "#F97316"; style.font-color: "#FFFFFF" }
+  image_flow: "Image Flow" { shape: rectangle; style.fill: "#3B82F6"; style.font-color: "#FFFFFF" }
+  service_call: "Service Call" { shape: rectangle; style.fill: "#6B7280"; style.font-color: "#FFFFFF" }
+  trigger: "Trigger" { shape: rectangle; style.fill: "#EAB308"; style.font-color: "#000000" }
+}
