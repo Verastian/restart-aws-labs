@@ -1,0 +1,10 @@
+{
+  "label": "Casos",
+  "position": 1,
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "doc",
+    "id": "arquitecturas/casos/index"
+  }
+}

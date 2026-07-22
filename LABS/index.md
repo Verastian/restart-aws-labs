@@ -15,3 +15,4 @@ Base de conocimiento para la certificación **AWS Cloud Practitioner** y **IA Ge
 | **Servicios AWS** | Teoría y conceptos clave por servicio |
 | **Laboratorios** | Prácticas guiadas con capturas de pantalla |
 | **Guías** | Configuraciones, despliegues y tutoriales |
+| **Prácticas de Arquitectura** | Casos de diseño de arquitectura, documentados con D2 y Lucidchart |
